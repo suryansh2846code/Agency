@@ -1,26 +1,105 @@
 @import "tailwindcss";
 
+/* ============================================================
+   AGENCY — "Building the Future of Education"
+   Premium futuristic theme: deep navy + electric blue, glass,
+   soft bloom. 3D is the storytelling layer; UI stays clean.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy-950: #05070f;
+  --navy-900: #070b18;
+  --navy-800: #0b1122;
+  --navy-700: #111a33;
+  --line:     #1b264a;
+  --text:     #e9eefc;
+  --muted:    #93a1c4;
+  --blue:     #3d7bff;   /* electric blue */
+  --blue-2:   #58a6ff;
+  --cyan:     #35e0ff;
+  --green:    #34d399;   /* success */
+  --orange:   #ff8a4c;   /* highlights */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--navy-950);
+  --color-foreground: var(--text);
+  --color-muted: var(--muted);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-line: var(--line);
+  --color-blue: var(--blue);
+  --color-blue-2: var(--blue-2);
+  --color-cyan: var(--cyan);
+  --color-green: var(--green);
+  --color-orange: var(--orange);
+  --font-sans: var(--font-inter);
+  --font-head: var(--font-sora);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--navy-950);
+  color: var(--text);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-height: 1.1; }
+
+/* --- Reusable utilities --- */
+.font-head { font-family: var(--font-sora), system-ui, sans-serif; }
+
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.grad-text {
+  background: linear-gradient(100deg, var(--blue-2), var(--cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-blue { box-shadow: 0 20px 70px -25px rgba(61,123,255,.7); }
+.text-glow { text-shadow: 0 0 30px rgba(88,166,255,.45); }
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cyan);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 15px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  cursor: pointer; border: 1px solid transparent; white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(100deg, var(--blue), #6aa4ff);
+  color: #fff; box-shadow: 0 14px 40px -14px rgba(61,123,255,.8);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 22px 55px -14px rgba(61,123,255,.95); }
+.btn-ghost {
+  background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.14); color: var(--text);
+}
+.btn-ghost:hover { transform: translateY(-2px); background: rgba(255,255,255,.08); }
+
+/* Section rhythm */
+.section { position: relative; z-index: 1; padding: 120px 0; }
+.container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
