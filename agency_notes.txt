@@ -1,0 +1,187 @@
+========================================================
+  DIGITAL AGENCY — PROJECT NOTES & CONTEXT
+========================================================
+Last updated: 2026-07-10
+Currency assumption: INR (₹) — confirm/adjust if different market
+
+
+--------------------------------------------------------
+1. THE IDEA
+--------------------------------------------------------
+An agency that serves SCHOOLS and COLLEGES with:
+  - Functional websites (also used to advertise the school)
+  - Managed + created content for Instagram and Facebook
+
+Core insight: Schools/colleges are underserved digitally.
+Outdated or no websites, poorly run social media, and they
+increasingly compete for admissions. We sell ADMISSIONS
+GROWTH, not just "a website."
+
+Current rating: 7.5 / 10
+  - Idea is not the risk; EXECUTION + CONSISTENCY are.
+  - Biggest unknown: content quality (brother still learning).
+
+
+--------------------------------------------------------
+2. THE TEAM
+--------------------------------------------------------
+  - ME (owner): Sales, client relationships, websites,
+    project management, and ALL money handling.
+  - BROTHER: Content creation — shooting reels, editing,
+    designing posts, captions. Currently LEARNING.
+
+Money: One shared account. Brother must ASK me before
+spending anything. No formal equity split — I control funds.
+
+
+--------------------------------------------------------
+3. GO-TO-MARKET STRATEGY
+--------------------------------------------------------
+  - START with MY OWN OLD SCHOOL (warm network, easy to
+    convince, low stakes, forgiving of early mistakes).
+  - Offer them a "FOUNDING CLIENT" deal: discounted/at-cost
+    website in exchange for:
+        1. Video testimonial from principal
+        2. Permission to use in portfolio
+        3. Introductions to 2-3 other schools
+  - Use that first result as the case study to win 3-4 more.
+
+  - Sell OUTCOMES ("fill more seats"), not deliverables.
+  - Push the RETAINER (social media) — that's the real
+    business. Websites are the door-opener.
+
+
+--------------------------------------------------------
+4. PRICING — WEBSITE TIERS (one-time)
+--------------------------------------------------------
+STARTER  — ₹15,000–25,000
+  For: small schools, tight budget
+  4-5 pages (Home, About, Contact, Gallery)
+  Clean template, mobile-friendly, basic contact form
+  No admin panel
+
+PROFESSIONAL ⭐ (default/showcase) — ₹35,000–60,000
+  For: most schools
+  8-10 pages + Admissions, Faculty, News
+  Customized template + their branding
+  Admission enquiry form, Google Maps, gallery
+  Basic admin panel (they can edit)
+
+PREMIUM — ₹80,000–1,50,000+
+  For: colleges / big private schools
+  12+ custom sections, fully custom design
+  Online admission form, event calendar, notice board,
+  possibly fee payment
+  Full admin panel
+
++ ANNUAL MAINTENANCE/HOSTING FEE: ₹5,000–15,000/yr
+  (quiet recurring income; covers domain, hosting, updates)
+
+NOTE on "different quality packages": make the cheap tier
+SMALLER (fewer pages/features), NOT uglier. Every site ships
+looking good — it's an advertisement for us.
+
+
+--------------------------------------------------------
+5. PRICING — SOCIAL MEDIA TIERS (monthly retainer)
+--------------------------------------------------------
+BASIC — ₹8,000–12,000/mo
+  8 static posts, Instagram only
+  Captions, hashtags, scheduling
+  No shoot day (they send photos)
+
+GROWTH ⭐ — ₹15,000–25,000/mo
+  12 posts + 4 reels, Instagram + Facebook
+  + Stories, basic engagement
+  1 shoot-day visit/month
+
+PRO — ₹30,000–50,000/mo
+  16 posts + 8 reels, IG + FB + YouTube shorts
+  + Paid ad management, monthly report
+  2 shoot-day visits/month
+
+WHY RETAINERS: 1 website = ₹40k once.
+1 "Growth" client = ₹20k × 12 = ₹2.4 LAKH/year, recurring.
+KEY METRIC TO WATCH: number of RETAINER clients.
+
+
+--------------------------------------------------------
+6. EXPENSES (low-capital business)
+--------------------------------------------------------
+STARTUP (one-time):
+  - Domain (our agency site): ₹800–1,200/yr
+  - Laptop: ₹0 if already owned
+  - Canva Pro: ~₹500/mo
+  - Camera gear: phone is enough; +₹1,500 tripod, ₹1,000 mic
+  - Editing: CapCut (free) to start
+  => TOTAL to start: UNDER ₹5,000 if phone+laptop owned
+
+MONTHLY RUNNING:
+  - Canva Pro + editing + scheduling tools: ~₹1,500–2,500/mo
+
+PER-CLIENT (mostly billed TO the client):
+  - Client domain (~₹1,000/yr) -> client pays
+  - Client hosting (₹2,000–5,000/yr) -> client pays / bundle
+  - Travel to shoot days -> we bear (fuel/transport)
+
+DO NOT BUY YET (wait for 2-3 paying clients):
+  - Expensive cameras, self paid-ads, office, business
+    registration/GST.
+
+
+--------------------------------------------------------
+7. ROADMAP
+--------------------------------------------------------
+PHASE 0 — PREP (Weeks 1-2)
+  [ ] Agency name + logo (Canva, don't overthink)
+  [ ] Agency's own Instagram page
+  [ ] Buy Canva Pro, set up CapCut
+  [ ] Brother: make 5-10 sample reels/posts for a FAKE
+      school (build skill + samples)
+  [ ] Build our OWN agency one-page website (= our proof)
+
+PHASE 1 — LIGHTHOUSE CLIENT (Month 1)
+  [ ] Pitch old school with founding-client discount
+  [ ] Build their website (Professional tier as showcase)
+  [ ] Run their Instagram free/cheap for 1 month
+  [ ] Capture proof: before/after, testimonial video, numbers
+
+PHASE 2 — FIRST PAYING CLIENTS (Months 2-4)
+  [ ] Turn school result into portfolio + case study
+  [ ] Ask school for 2-3 referrals
+  [ ] Pitch 5-10 schools/colleges
+  [ ] GOAL: land 2 paying clients; lock in monthly retainers
+
+PHASE 3 — SYSTEMATIZE (Months 5-8)
+  [ ] Reusable templates (web themes, post templates, calendar)
+  [ ] "Shoot day" system (one visit = a month of content)
+  [ ] Standard pricing sheet + proposal PDF
+  [ ] GOAL: 4-5 retainer clients
+
+PHASE 4 — SCALE (Months 9-12)
+  [ ] Hire freelance editor (free brother for higher-value work)
+  [ ] Register business, invoicing/GST setup (only NOW)
+  [ ] Add paid ads as an upsell
+  [ ] GOAL: 8-10 clients, predictable recurring revenue
+
+
+--------------------------------------------------------
+8. KEY REMINDERS
+--------------------------------------------------------
+  - Retainers > one-off websites. Always try to convert a
+    website sale into a monthly client.
+  - Consistency of content is what makes/breaks this.
+  - Start cheap, spend money only AFTER paying clients.
+  - Get parental CONSENT for student/minor photos — make it
+    the school's responsibility in the contract.
+  - Annual contracts help smooth admission-season seasonality.
+
+
+--------------------------------------------------------
+9. NEXT ACTIONS (to work on here)
+--------------------------------------------------------
+  [ ] Draft pitch/proposal for old school
+  [ ] Month-1 content plan for brother to practice
+  [ ] Brainstorm agency names
+  [ ] Cost breakdown / first-90-days plan
+========================================================
