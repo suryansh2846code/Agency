@@ -34,23 +34,27 @@
   <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="container hero__inner">
-      <p class="eyebrow">Digital agency for schools &amp; colleges</p>
-      <h1 class="hero__title">
-        More admissions start with a <span class="grad">better online presence.</span>
-      </h1>
-      <p class="hero__sub">
-        We build modern websites and run the Instagram &amp; Facebook for schools and
-        colleges — so parents find you, trust you, and enquire.
-      </p>
-      <div class="hero__cta">
-        <a href="#contact" class="btn btn--lg">Book a Free Audit</a>
-        <a href="#pricing" class="btn btn--ghost btn--lg">See Pricing</a>
+      <div class="hero__copy">
+        <p class="eyebrow">Digital agency for schools &amp; colleges</p>
+        <h1 class="hero__title">
+          More admissions start with a <span class="grad">better online presence.</span>
+        </h1>
+        <p class="hero__sub">
+          We build modern websites and run the Instagram &amp; Facebook for schools and
+          colleges — so parents find you, trust you, and enquire.
+        </p>
+        <div class="hero__cta">
+          <a href="#contact" class="btn btn--lg">Book a Free Audit</a>
+          <a href="#pricing" class="btn btn--ghost btn--lg">See Pricing</a>
+        </div>
+        <div class="hero__stats">
+          <div><strong>2-in-1</strong><span>Website + Social, one team</span></div>
+          <div><strong>7 days</strong><span>To your new site live</span></div>
+          <div><strong>Monthly</strong><span>Fresh content, done for you</span></div>
+        </div>
       </div>
-      <div class="hero__stats">
-        <div><strong>2-in-1</strong><span>Website + Social, one team</span></div>
-        <div><strong>7 days</strong><span>To your new site live</span></div>
-        <div><strong>Monthly</strong><span>Fresh content, done for you</span></div>
-      </div>
+      <!-- Interactive 3D scene (Three.js) mounts here -->
+      <div class="hero__3d" id="hero3d" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -221,5 +225,15 @@
   </footer>
 
   <script src="js/main.js"></script>
+
+  <!-- Three.js via ES module import map (CDN) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="js/hero3d.js"></script>
 </body>
 </html>
