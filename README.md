@@ -51,10 +51,9 @@ npm run build    # production build
 **Current milestone:** 3D digital-campus **MVP** — full scene + all content
 sections, builds clean (`npm run build` green), verified rendering headless.
 
-**Where we left off / last commit:** run `git log --oneline -1`. The history
-below is the deliberate build order for this feature branch
-(`worktree-3d-hero`); the newest code checkpoint is the last `chore:` /
-`feat:` entry:
+**Where we left off / last commit:** run `git log --oneline -1`. All work lives
+on **`main`** — this repo uses a single-branch workflow (see [Branching](#branching)).
+The table below is the deliberate build order; run `git log` for anything newer:
 
 | # | Commit | Subject |
 |---|--------|---------|
@@ -103,6 +102,13 @@ This repo uses **Conventional Commits** (`feat:`/`fix:`/`chore:`/`docs:`/
 `test:`/`refactor:`), imperative subjects < 72 chars, with a body explaining
 _what_ and _why_ for non-trivial changes. History is kept as focused,
 one-concern commits in natural build order, each in a working state.
+
+### Branching
+
+**Single branch: `main`.** All work is committed to `main` — no long-lived
+feature or worktree branches are kept. If an isolated workspace is used while
+building, its commits are fast-forwarded onto `main` and the temporary branch
+is deleted, so the repository only ever has `main`, locally and on `origin`.
 
 ### Reusable prompt — "make this type of commit"
 
