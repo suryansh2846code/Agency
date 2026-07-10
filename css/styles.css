@@ -97,6 +97,13 @@ ul { list-style: none; }
   min-height: 320px;
 }
 .hero__3d canvas { display: block; width: 100% !important; height: 100% !important; }
+/* Static fallback when WebGL is unavailable — a glowing brand orb */
+.hero__3d--fallback::before {
+  content: ""; position: absolute; inset: 0; margin: auto;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: var(--grad); filter: blur(4px);
+  box-shadow: 0 30px 90px -20px var(--brand); opacity: .9;
+}
 .hero__title { font-size: clamp(38px, 6vw, 66px); font-weight: 800; letter-spacing: -.02em; }
 .hero__sub { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); margin: 22px 0 32px; max-width: 620px; }
 .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; }

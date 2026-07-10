@@ -17,8 +17,14 @@ function initHero3D(mount) {
   const BRAND_2 = new THREE.Color('#00d4b8');
   const ACCENT  = new THREE.Color('#ff7a59');
 
-  // --- Renderer ---
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  // --- Renderer (falls back to a static CSS orb if WebGL is unavailable) ---
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  } catch (e) {
+    mount.classList.add('hero__3d--fallback');
+    return;
+  }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(mount.clientWidth, mount.clientHeight);
   mount.appendChild(renderer.domElement);
