@@ -36,6 +36,7 @@
   --color-orange: var(--orange);
   --font-sans: var(--font-inter);
   --font-head: var(--font-sora);
+  --font-mono: var(--font-mono);
 }
 
 * { box-sizing: border-box; }
@@ -102,4 +103,47 @@ h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-heig
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+/* ============================================================
+   ORIGIN — construction / blueprint primitives
+   ============================================================ */
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+
+/* Blueprint graph-paper grid — fine cells + heavier majors */
+.bp-grid {
+  background-image:
+    linear-gradient(rgba(61,123,255,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,123,255,.10) 1px, transparent 1px),
+    linear-gradient(rgba(61,123,255,.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,123,255,.22) 1px, transparent 1px);
+  background-size: 28px 28px, 28px 28px, 140px 140px, 140px 140px;
+  background-position: -1px -1px;
+}
+
+/* Blinking terminal caret */
+.bp-caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.62ch; height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.14em;
+  background: var(--cyan);
+  box-shadow: 0 0 10px rgba(53,224,255,.9);
+  animation: bp-blink 1s steps(1) infinite;
+}
+@keyframes bp-blink { 0%,50% { opacity: 1 } 50.01%,100% { opacity: 0 } }
+
+/* The Blueprint Beam — ORIGIN's signature scan line */
+.bp-beam {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--cyan) 12%, #eaf6ff 50%, var(--cyan) 88%, transparent);
+  box-shadow: 0 0 18px 3px rgba(53,224,255,.8), 0 0 60px 12px rgba(61,123,255,.35);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-caret::after { animation: none; }
 }
