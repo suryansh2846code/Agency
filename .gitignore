@@ -34,3 +34,11 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large media, 3D models & AI source assets (kept out of git — see README)
+/assets/
+/public/videos/
+/public/models/
+*.mp4
+*.mov
+*.glb
