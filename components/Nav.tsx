@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 const links = [
-  ["Services", "#services"],
   ["Work", "#work"],
+  ["Services", "#services"],
   ["Process", "#process"],
-  ["Pricing", "#pricing"],
+  ["About", "#about"],
 ];
 
 export default function Nav() {
@@ -30,8 +30,11 @@ export default function Nav() {
             scrolled ? "glass" : ""
           }`}
         >
-          <a href="#top" className="font-head text-lg font-extrabold tracking-tight">
-            Brand<span className="grad-text">name</span>
+          <a href="#top" className="flex items-baseline gap-2">
+            <span className="font-head text-lg font-extrabold tracking-[0.14em]">ORIGIN</span>
+            <span className="hidden font-mono text-[9px] tracking-[0.28em] text-[var(--muted)] sm:inline">
+              DIGITAL AGENCY
+            </span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-[var(--muted)]">
             {links.map(([label, href]) => (
@@ -41,7 +44,7 @@ export default function Nav() {
             ))}
           </nav>
           <a href="#contact" className="btn btn-primary !py-2.5 !px-5 text-sm">
-            Book a Call
+            LET&apos;S BUILD
           </a>
         </div>
       </div>
