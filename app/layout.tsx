@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Sora, Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -15,17 +15,24 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
+// Engineering / terminal voice — HUD, construction notes, the cold-open readout.
+const mono = Geist_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
 export const metadata: Metadata = {
-  title: "Brandname — We Build Digital Campuses That Fill Classrooms",
+  title: "ORIGIN — Every Great Brand Starts as a Blueprint",
   description:
-    "A premium digital agency for schools & colleges. We design websites, run social media, and drive admissions growth — building the future of education online.",
+    "ORIGIN is a premium digital agency for schools & colleges. We engineer websites, content and growth — watch your brand being built, from blueprint to launch.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${inter.variable} antialiased`}>
+    <html lang="en" className={`${sora.variable} ${inter.variable} ${mono.variable} antialiased`}>
       <body>
         <SmoothScroll>{children}</SmoothScroll>
       </body>
