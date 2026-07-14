@@ -1,4 +1,5 @@
-import SceneMount from "@/components/scene/SceneMount";
+import BuildIntro from "@/components/intro/BuildIntro";
+import BuildHud from "@/components/hud/BuildHud";
 import Nav from "@/components/Nav";
 import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
@@ -13,10 +14,12 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
-      {/* Persistent 3D digital campus — the storytelling layer behind everything */}
-      <SceneMount />
+      {/* Cold-open cinematic — plays once per session, then reveals the page */}
+      <BuildIntro />
 
       <Nav />
+      {/* Persistent BUILD% dashboard — the spine of the whole experience */}
+      <BuildHud />
       <main className="relative">
         <Hero />
         <Services />
