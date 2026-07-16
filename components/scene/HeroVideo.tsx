@@ -60,6 +60,7 @@ export default function HeroVideo() {
       playsInline
       preload="auto"
       className="absolute inset-0 h-full w-full object-cover [object-position:64%_center]"
+      style={{ filter: "contrast(1.05) saturate(0.9) brightness(0.96)" }}
     />
   );
 }

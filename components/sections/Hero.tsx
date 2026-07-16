@@ -47,6 +47,17 @@ export default function Hero() {
         <div className="absolute inset-0">
           <HeroVideo />
         </div>
+
+        {/* --- color-grade the video into the obsidian environment --- */}
+        {/* deepen edges to obsidian (matches the atmosphere vignette) */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_62%_36%,transparent_42%,rgba(8,9,11,.6)_100%)]" />
+        {/* subtle blueprint-blue unify + shared grain */}
+        <div className="pointer-events-none absolute inset-0 mix-blend-soft-light bg-[#2d8cff] opacity-[0.05]" />
+        <div className="grain pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-soft-light" />
+        {/* feather the whole lower half into obsidian so the video dissolves
+            completely into the environment before the sections (no seam) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[52%] bg-[linear-gradient(to_bottom,transparent,rgba(8,9,11,0.85)_70%,var(--obsidian)_88%)]" />
+
         {/* readability wash confined to the left content zone */}
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#04060d_18%,rgba(4,6,13,0.6)_38%,transparent_56%)]" />
 

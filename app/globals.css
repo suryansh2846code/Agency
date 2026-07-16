@@ -84,6 +84,12 @@ h1, h2, h3, h4 { color: var(--text); font-family: var(--font-display), system-ui
 .font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
 .font-cond { font-family: var(--font-cond), "Arial Narrow", system-ui, sans-serif; }
 
+/* Shared concrete grain — unifies the video and the environment */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
 /* Glass — carbon-tinted frosted panels with hairline metallic edges */
 .glass {
   background: rgba(20, 24, 31, 0.55);
