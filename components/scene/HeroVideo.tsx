@@ -59,7 +59,7 @@ export default function HeroVideo() {
       muted
       playsInline
       preload="auto"
-      className="absolute inset-0 h-full w-full object-cover"
+      className="absolute inset-0 h-full w-full object-cover [object-position:64%_center]"
     />
   );
 }

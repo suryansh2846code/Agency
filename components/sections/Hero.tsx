@@ -6,30 +6,25 @@ import { scrollState } from "@/lib/scroll";
 import HeroVideo from "@/components/scene/HeroVideo";
 
 const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
-
 const ease = [0.22, 1, 0.36, 1] as const;
 
-// Temporarily hide the DOM overlay to evaluate the 3D scene on its own.
-const SHOW_CONTENT = false;
-
-const IDEA = [
-  ["Websites that impress", "Modern, fast and mobile-first websites."],
-  ["Content that connects", "Engaging posts, reels and videos that showcase your story."],
-  ["Strategy that grows", "Data-driven strategies that bring more inquiries and admissions."],
-  ["Results that matter", "More visibility, more engagement, more admissions."],
+const PRINCIPLES: [React.ReactNode, string, string][] = [
+  [<Crosshair key="s" />, "Engineered", "Strategy"],
+  [<Cube key="d" />, "Precision", "Design"],
+  [<Layers key="b" />, "Built to", "Scale"],
 ];
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Feed the pinned hero's local scroll progress (0..1) to the 3D scene, which
-  // scrubs the whole build (blueprint drop → arm travel → blocks rise).
+  // Feed the pinned hero's local scroll progress (0..1) to scrollState — it
+  // drives the video scrub (HeroVideo) and the BUILD% HUD. The copy is static.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const forced = params.get("hp");
     if (forced !== null) {
       scrollState.heroBuild = clamp01(parseFloat(forced));
-      return; // dev override for inspecting a fixed build state
+      return;
     }
     let raf = 0;
     const update = () => {
@@ -47,119 +42,121 @@ export default function Hero() {
 
   return (
     <section id="top" ref={sectionRef} className="relative h-[240vh]">
-      {/* pinned viewport — the build scrubs while the tall section scrolls past */}
       <div className="sticky top-0 h-[100svh] overflow-hidden">
-        {/* scroll-scrubbed hero video */}
+        {/* robot stage — full-bleed, shifted right so it owns the right half */}
         <div className="absolute inset-0">
           <HeroVideo />
         </div>
-      {SHOW_CONTENT && (
-      <>
-      {/* readability wash on the left where the headline sits */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#05070f_8%,rgba(5,7,15,0.72)_34%,transparent_58%)]" />
+        {/* readability wash confined to the left content zone */}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#04060d_18%,rgba(4,6,13,0.6)_38%,transparent_56%)]" />
 
-      <div className="container relative z-10 flex min-h-[100svh] items-center py-28">
-        <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-12">
-          {/* ---- Left: the pitch ---- */}
-          <div className="lg:col-span-5">
+        {/* ---- Left content zone (max 560px, never over the robot) ---- */}
+        <div className="container relative z-10 flex h-full items-center">
+          <div className="max-w-[560px]">
             <motion.p
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease }}
-              className="font-mono text-[12px] tracking-[0.2em] text-[var(--cyan)]"
+              className="flex items-center gap-2 font-mono text-[12px] tracking-[0.22em] text-[var(--cyan)]"
             >
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--cyan)]" />
               PROJECT_0001 · ORIGIN
             </motion.p>
 
             <motion.h1
-              initial={{ opacity: 0, y: 22 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.1, ease }}
-              className="mt-5 font-head font-extrabold tracking-tight text-glow"
-              style={{ fontSize: "clamp(38px, 5.2vw, 66px)", lineHeight: 1.02 }}
+              transition={{ duration: 0.9, delay: 0.12, ease }}
+              className="mt-6 font-head font-semibold tracking-[-0.02em]"
+              style={{ fontSize: "clamp(34px, 3.7vw, 52px)", lineHeight: 1.12 }}
             >
-              EVERY GREAT BRAND STARTS <span className="grad-text">AS A BLUEPRINT.</span>
+              Every Great Brand
+              <br />
+              Starts
+              <br />
+              <span className="grad-text">as a Blueprint.</span>
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease }}
-              className="mt-6 max-w-md text-lg text-[var(--muted)]"
+              transition={{ duration: 0.8, delay: 0.28, ease }}
+              className="mt-9 max-w-[360px] border-l border-white/15 pl-4 text-[15px] leading-relaxed text-[var(--muted)]"
             >
-              We design, build and grow digital experiences that drive real results for
-              schools and colleges.
+              We engineer digital experiences that are thoughtful, functional and built to
+              create real impact.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45, ease }}
-              className="mt-8 flex flex-wrap items-center gap-4"
+              transition={{ duration: 0.8, delay: 0.42, ease }}
+              className="mt-9 flex flex-wrap items-center gap-4"
             >
-              <a href="#contact" className="btn btn-primary">
-                LET&apos;S DRAW IT TOGETHER →
+              <a href="#contact" className="btn btn-primary font-mono !tracking-[0.12em]">
+                → INITIALIZE PROJECT
               </a>
-              <a href="#work" className="btn btn-ghost">
-                ▶ VIEW OUR WORK
+              <a href="#work" className="btn btn-ghost font-mono !tracking-[0.12em]">
+                VIEW OUR WORK →
               </a>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.9 }}
-              className="mt-12 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--muted)]"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.55, ease }}
+              className="mt-12 flex gap-10"
             >
-              <span className="grid h-6 w-6 place-items-center rounded-full border border-white/15">↓</span>
-              Scroll to watch the transformation
-            </motion.div>
-          </div>
-
-          <div className="hidden lg:col-span-4 lg:block" />
-
-          {/* ---- Right: THE IDEA ---- */}
-          <motion.aside
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.6, ease }}
-            className="glass rounded-2xl p-5 lg:col-span-3"
-          >
-            <div className="flex items-center gap-2 font-mono text-[12px] tracking-[0.18em] text-[var(--cyan)]">
-              <span>◆</span> THE IDEA
-            </div>
-            <p className="mt-3 text-sm text-[var(--muted)]">
-              We turn your vision into a powerful digital presence that attracts, engages
-              and converts.
-            </p>
-
-            <div className="mt-4 flex items-center justify-between font-mono text-[10px] tracking-[0.12em] text-[var(--blue-2)]">
-              <span>YOUR VISION</span>
-              <span className="text-[var(--muted)]">→</span>
-              <span>STRATEGY</span>
-              <span className="text-[var(--muted)]">→</span>
-              <span>IMPACT</span>
-            </div>
-
-            <div className="mt-5 space-y-4">
-              {IDEA.map(([title, desc]) => (
-                <div key={title} className="flex gap-3">
-                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-md border border-[var(--blue)]/30 bg-[var(--blue)]/10 text-[var(--cyan)]">
-                    ▢
+              {PRINCIPLES.map(([icon, a, b]) => (
+                <div key={b} className="flex flex-col gap-3">
+                  <span className="text-[var(--blue-2)]">{icon}</span>
+                  <span className="font-mono text-[11px] leading-[1.5] tracking-[0.14em]">
+                    <span className="text-[var(--blue-2)]">{a.toUpperCase()}</span>
+                    <br />
+                    <span className="text-[var(--text)]">{b.toUpperCase()}</span>
                   </span>
-                  <div>
-                    <div className="text-sm font-semibold text-[var(--text)]">{title}</div>
-                    <div className="text-[12px] leading-snug text-[var(--muted)]">{desc}</div>
-                  </div>
                 </div>
               ))}
-            </div>
-          </motion.aside>
+            </motion.div>
+          </div>
         </div>
-      </div>
-      </>
-      )}
+
+        {/* scroll hint */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.8 }}
+          className="pointer-events-none absolute bottom-7 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 font-mono text-[10px] tracking-[0.25em] text-[var(--muted)]"
+        >
+          <span className="flex h-6 w-4 items-start justify-center rounded-full border border-white/20 pt-1">
+            <span className="h-1.5 w-1 rounded-full bg-[var(--cyan)]" />
+          </span>
+          SCROLL TO EXPLORE
+        </motion.div>
       </div>
     </section>
+  );
+}
+
+/* --- minimal line icons for the principles --- */
+function Crosshair() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <circle cx="12" cy="12" r="7" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+    </svg>
+  );
+}
+function Cube() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <path d="M12 2 21 7v10l-9 5-9-5V7z" /><path d="M12 12 21 7M12 12v10M12 12 3 7" />
+    </svg>
+  );
+}
+function Layers() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="M3 13l9 5 9-5" />
+    </svg>
   );
 }
