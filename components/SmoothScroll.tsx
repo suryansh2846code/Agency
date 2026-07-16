@@ -23,8 +23,22 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
     raf = requestAnimationFrame(loop);
 
+    // Smooth-scroll in-page anchor links (nav, CTAs) instead of a hard jump.
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+      const hash = a?.getAttribute("href");
+      if (!hash || hash === "#") return;
+      const target = document.querySelector(hash);
+      if (target) {
+        e.preventDefault();
+        lenis.scrollTo(target as HTMLElement, { offset: -80 });
+      }
+    };
+    document.addEventListener("click", onClick);
+
     return () => {
       cancelAnimationFrame(raf);
+      document.removeEventListener("click", onClick);
       lenis.destroy();
     };
   }, []);
