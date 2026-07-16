@@ -25,7 +25,8 @@ brands._
 - **three** + **@react-three/fiber** (R3F) + **@react-three/drei**
 - **@react-three/postprocessing** (bloom)
 - **framer-motion** (UI motion), **lenis** (smooth scroll)
-- Fonts: **Sora** (display), **Inter** (body), **Geist Mono** (engineering/HUD)
+- Fonts: **Space Grotesk** (display), **Inter** (body), **Geist Mono**
+  (engineering/HUD), **Roboto Condensed** (tiny construction labels)
 
 ## Project structure
 
@@ -41,8 +42,10 @@ components/
   scene/            # HeroVideo (scroll-scrubbed video hero)
                     #   HeroScene (parked real-time 3D hero — see devlog)
   sections/         # Hero + the marketing sections (glassmorphism)
-  Backdrop.tsx      # ambient grid + glows the glass cards refract
+  Atmosphere.tsx    # inferred industrial-lab backdrop (wakes on scroll)
+  Dust.tsx          # drifting dust-particle canvas
   TiltCard.tsx      # reusable glass card with hover tilt + shine
+  SectionHeader.tsx # shared section heading
   Nav.tsx  Footer.tsx  Reveal.tsx  SmoothScroll.tsx
 lib/
   scroll.ts         # shared scroll state (page progress + hero-build progress)
@@ -51,13 +54,20 @@ legacy/             # the original static HTML/CSS/JS site (archived)
 
 ## Design system
 
-- **Glassmorphism** — dark frosted panels (`.glass-card`) sit over an ambient
-  `Backdrop` (blueprint grid + soft blue/cyan glows) that gives the frost
-  something to refract.
+- **Industrial material palette** — obsidian / carbon / gunmetal / titanium /
+  steel materials; **blue is precious** (Blueprint Blue `#2D8CFF` for
+  active/focus, Electric `#4CB8FF` for glow, Cyan `#8DEBFF` for tiny HUD).
+  Roughly a 4%-surface / 1%-glow budget so blue never takes over.
+- **Typography (3 tiers)** — Space Grotesk (display/identity), Inter (body),
+  Geist Mono (HUD/engineering), Roboto Condensed (tiny construction labels).
+- **Glassmorphism** — carbon-tinted frosted panels (`.glass-card`) with
+  hairline metallic edges.
 - **Tilt + shine** — `TiltCard` (and the BUILD% HUD) tilt in 3D toward the
   cursor with a light glare on hover.
-- **Construction labels** — mono metadata (`MODULE_01 · INSTALLED`, phase
-  names, `REVISION 001`) reinforce the engineered feel.
+- **Atmosphere** — the page lives inside an inferred industrial lab
+  (`Atmosphere`): vignette, concrete grain, blueprint grid, hidden engineering
+  marks, drifting `Dust`, haze and a slow scanner beam that **wake up as you
+  scroll** (mirroring BUILD%), rather than sitting on empty black.
 
 ## Run locally
 
@@ -96,6 +106,13 @@ into floating glass, redesigned the BUILD% HUD as a tiltable metadata panel, and
 began restyling the sections in glassmorphism with a reusable tilt-and-shine
 `TiltCard` over an ambient `Backdrop`. Services done; the remaining sections
 (Stats, Portfolio, Process, Testimonials, Pricing, Final CTA) are next.
+
+**Identity pass (2026-07):** restyled all remaining sections in glass, adopted
+the industrial **material palette** (blue as a precious accent) and the 3-tier
+**type system** (Space Grotesk / Inter / Geist Mono / Roboto Condensed), and
+replaced the flat backdrop with the layered **`Atmosphere`** (vignette, grain,
+grid, hidden marks, `Dust`, haze, scanner beam) that wakes on scroll. Added
+smooth-scroll for in-page anchors.
 
 **The 3D → video pivot (why the hero is a video):** the hero was first built as
 a real-time R3F scene (`HeroScene`) where a robot arm builds 3D blocks from a
