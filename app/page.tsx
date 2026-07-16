@@ -1,5 +1,6 @@
 import BuildIntro from "@/components/intro/BuildIntro";
 import BuildHud from "@/components/hud/BuildHud";
+import Backdrop from "@/components/Backdrop";
 import Nav from "@/components/Nav";
 import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
@@ -16,6 +17,9 @@ export default function Home() {
     <>
       {/* Cold-open cinematic — plays once per session, then reveals the page */}
       <BuildIntro />
+
+      {/* Ambient backdrop that the glass sections refract */}
+      <Backdrop />
 
       <Nav />
       {/* Persistent BUILD% dashboard — the spine of the whole experience */}
