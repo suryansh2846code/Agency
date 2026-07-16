@@ -36,16 +36,28 @@ app/
   globals.css       # theme tokens + blueprint primitives (grid, caret, beam)
 components/
   intro/            # BuildIntro — the cold-open cinematic
-  hud/              # BuildHud — the persistent BUILD% dashboard
+  hud/              # BuildHud — the tiltable BUILD% metadata panel
   blueprint/        # Wireframe — shared blueprint SVG primitive
   scene/            # HeroVideo (scroll-scrubbed video hero)
                     #   HeroScene (parked real-time 3D hero — see devlog)
-  sections/         # Hero + the marketing sections
+  sections/         # Hero + the marketing sections (glassmorphism)
+  Backdrop.tsx      # ambient grid + glows the glass cards refract
+  TiltCard.tsx      # reusable glass card with hover tilt + shine
   Nav.tsx  Footer.tsx  Reveal.tsx  SmoothScroll.tsx
 lib/
   scroll.ts         # shared scroll state (page progress + hero-build progress)
 legacy/             # the original static HTML/CSS/JS site (archived)
 ```
+
+## Design system
+
+- **Glassmorphism** — dark frosted panels (`.glass-card`) sit over an ambient
+  `Backdrop` (blueprint grid + soft blue/cyan glows) that gives the frost
+  something to refract.
+- **Tilt + shine** — `TiltCard` (and the BUILD% HUD) tilt in 3D toward the
+  cursor with a light glare on hover.
+- **Construction labels** — mono metadata (`MODULE_01 · INSTALLED`, phase
+  names, `REVISION 001`) reinforce the engineered feel.
 
 ## Run locally
 
@@ -77,6 +89,13 @@ its video at runtime**, so a deploy needs it in place:
 **Current milestone:** ORIGIN concept — cold-open cinematic, BUILD % spine, and
 a scroll-scrubbed video hero, on top of the existing marketing sections. Builds
 clean; verified via headless Chrome screenshots.
+
+**Premium glass pass (2026-07):** refined the hero into a calm editorial
+two-column layout (robot right, copy in a ≤560px left zone), lightened the nav
+into floating glass, redesigned the BUILD% HUD as a tiltable metadata panel, and
+began restyling the sections in glassmorphism with a reusable tilt-and-shine
+`TiltCard` over an ambient `Backdrop`. Services done; the remaining sections
+(Stats, Portfolio, Process, Testimonials, Pricing, Final CTA) are next.
 
 **The 3D → video pivot (why the hero is a video):** the hero was first built as
 a real-time R3F scene (`HeroScene`) where a robot arm builds 3D blocks from a
