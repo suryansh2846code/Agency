@@ -33,7 +33,11 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export default function BuildHud() {
   const [pct, setPct] = useState(0);
+  const [side, setSide] = useState<"right" | "left">("right");
+
   useEffect(() => {
+    const saved = localStorage.getItem("origin-hud-side");
+    if (saved === "left" || saved === "right") setSide(saved);
     let raf = 0;
     const loop = () => {
       setPct(Math.round(scrollState.progress * 100));
@@ -42,6 +46,13 @@ export default function BuildHud() {
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
   }, []);
+
+  const toggleSide = () =>
+    setSide((s) => {
+      const next = s === "right" ? "left" : "right";
+      localStorage.setItem("origin-hud-side", next);
+      return next;
+    });
 
   // --- hover tilt + shine ---
   const cardRef = useRef<HTMLDivElement>(null);
@@ -66,22 +77,27 @@ export default function BuildHud() {
 
   const done = pct >= 100;
   const filled = Math.round((pct / 100) * SEGMENTS);
+  // fade the panel away as we arrive at the footer
+  const fade = pct < 88 ? 1 : Math.max(0, 1 - (pct - 88) / 10);
 
   return (
     <div
-      className="pointer-events-none fixed right-8 top-[22vh] z-40 hidden w-[150px] select-none font-mono lg:block"
-      style={{ perspective: "800px" }}
+      className={`pointer-events-none fixed top-[19vh] z-40 hidden w-[124px] select-none font-mono xl:block ${
+        side === "right" ? "right-5" : "left-5"
+      }`}
+      style={{ perspective: "800px", opacity: fade }}
     >
       <div
         ref={cardRef}
         onPointerMove={onMove}
         onPointerEnter={() => setHovering(true)}
         onPointerLeave={onLeave}
-        className="pointer-events-auto relative space-y-4 overflow-hidden rounded-lg border border-white/10 bg-[rgba(6,10,20,0.35)] px-4 py-4 backdrop-blur-md"
+        className="pointer-events-auto relative space-y-3 overflow-hidden rounded-lg border border-white/10 bg-[rgba(6,10,20,0.35)] px-3.5 py-3.5 backdrop-blur-md"
         style={{
           transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
           transition: hovering ? "transform 80ms linear" : "transform 500ms ease",
           boxShadow: hovering ? "0 30px 60px -34px rgba(45,140,255,.5)" : "none",
+          pointerEvents: fade < 0.1 ? "none" : undefined,
         }}
       >
         {/* cursor-following shine */}
@@ -93,6 +109,18 @@ export default function BuildHud() {
             background: `radial-gradient(220px circle at ${glare.x}% ${glare.y}%, rgba(76,184,255,.16), transparent 55%)`,
           }}
         />
+
+        {/* move the panel to the other side */}
+        <button
+          onClick={toggleSide}
+          aria-label={`Move panel to the ${side === "right" ? "left" : "right"}`}
+          title="Move panel"
+          className="absolute right-1.5 top-1.5 z-20 grid h-5 w-5 place-items-center rounded text-[var(--titanium)] transition-colors hover:text-[var(--cyan)]"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 7 4 11l4 4M16 7l4 4-4 4M4 11h16" />
+          </svg>
+        </button>
 
         <Field label="PROJECT">
           <span className="font-semibold tracking-[0.18em]">ORIGIN</span>
@@ -106,7 +134,7 @@ export default function BuildHud() {
 
         <div>
           <div className="text-[9px] tracking-[0.2em] text-[var(--muted)]/70">BUILD PROGRESS</div>
-          <div className="mt-1 text-[22px] font-semibold leading-none text-[var(--blue-2)] tabular-nums">
+          <div className="mt-1 text-[19px] font-semibold leading-none text-[var(--blue-2)] tabular-nums">
             {pct}%
           </div>
           <div className="mt-2 flex gap-1">
