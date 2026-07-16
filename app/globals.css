@@ -1,101 +1,134 @@
 @import "tailwindcss";
 
 /* ============================================================
-   AGENCY — "Building the Future of Education"
-   Premium futuristic theme: deep navy + electric blue, glass,
-   soft bloom. 3D is the storytelling layer; UI stays clean.
+   ORIGIN — industrial material system
+   Blue is precious (≈4% surface, ≈1% glow). Most of the page is
+   obsidian/carbon metal; blue means activity, focus, or the blueprint.
    ============================================================ */
 
 :root {
-  --navy-950: #05070f;
-  --navy-900: #070b18;
-  --navy-800: #0b1122;
-  --navy-700: #111a33;
-  --line:     #1b264a;
-  --text:     #e9eefc;
-  --muted:    #93a1c4;
-  --blue:     #3d7bff;   /* electric blue */
-  --blue-2:   #58a6ff;
-  --cyan:     #35e0ff;
-  --green:    #34d399;   /* success */
-  --orange:   #ff8a4c;   /* highlights */
+  /* materials */
+  --obsidian:  #08090B;   /* primary background */
+  --carbon:    #111418;   /* cards / panels / glass */
+  --gunmetal:  #23272E;   /* frames / structural borders */
+  --titanium:  #727A86;   /* icons / inactive / thin borders */
+  --steel:     #C7CDD6;   /* metallic highlights */
+
+  /* legacy aliases (still referenced around the app) */
+  --navy-950:  var(--obsidian);
+  --navy-900:  #0B1018;
+  --navy-800:  var(--carbon);
+  --navy-700:  var(--gunmetal);
+  --line:      var(--gunmetal);
+
+  /* typography */
+  --text:      #F4F7FA;   /* headlines (never pure white) */
+  --muted:     #A7B0BC;   /* body text */
+  --faint:     #6C7480;   /* muted / captions */
+
+  /* blueprint accents — use sparingly */
+  --blue:      #2D8CFF;   /* Blueprint Blue — active, buttons, progress */
+  --blue-2:    #4CB8FF;   /* Electric Blue — glow only */
+  --cyan:      #8DEBFF;   /* Cyan — tiny HUD / labels only */
+
+  /* status */
+  --green:     #23D18B;
+  --warning:   #FFB84A;
+  --error:     #FF5A5A;
+  --orange:    #FFB84A;   /* legacy alias */
 }
 
 @theme inline {
-  --color-background: var(--navy-950);
+  --color-background: var(--obsidian);
   --color-foreground: var(--text);
   --color-muted: var(--muted);
+  --color-obsidian: var(--obsidian);
+  --color-carbon: var(--carbon);
+  --color-gunmetal: var(--gunmetal);
+  --color-titanium: var(--titanium);
+  --color-steel: var(--steel);
   --color-navy-900: var(--navy-900);
-  --color-navy-800: var(--navy-800);
-  --color-navy-700: var(--navy-700);
+  --color-navy-800: var(--carbon);
+  --color-navy-700: var(--gunmetal);
   --color-line: var(--line);
   --color-blue: var(--blue);
   --color-blue-2: var(--blue-2);
   --color-cyan: var(--cyan);
   --color-green: var(--green);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
   --color-orange: var(--orange);
   --font-sans: var(--font-inter);
-  --font-head: var(--font-sora);
+  --font-head: var(--font-display);
   --font-mono: var(--font-mono);
+  --font-cond: var(--font-cond);
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--navy-950);
-  color: var(--text);
+  /* almost-invisible background gradient over obsidian */
+  background: var(--obsidian);
+  background-image: linear-gradient(180deg, #050608 0%, #0B1018 55%, var(--obsidian) 100%);
+  color: var(--muted);
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-height: 1.1; }
+h1, h2, h3, h4 { color: var(--text); font-family: var(--font-display), system-ui, sans-serif; line-height: 1.1; }
 
 /* --- Reusable utilities --- */
-.font-head { font-family: var(--font-sora), system-ui, sans-serif; }
+.font-head { font-family: var(--font-display), system-ui, sans-serif; }
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+.font-cond { font-family: var(--font-cond), "Arial Narrow", system-ui, sans-serif; }
 
+/* Glass — carbon-tinted frosted panels with hairline metallic edges */
 .glass {
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-  border: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(20, 24, 31, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(22px) saturate(120%);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
 }
 
-/* Glassmorphism card — dark frosted panel with a hairline edge (the HUD look) */
 .glass-card {
-  background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
-  border: 1px solid rgba(255,255,255,.09);
-  backdrop-filter: blur(22px) saturate(130%);
-  -webkit-backdrop-filter: blur(22px) saturate(130%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 24px 60px -40px rgba(0,0,0,.8);
+  background: linear-gradient(180deg, rgba(28, 33, 41, 0.6), rgba(17, 20, 24, 0.5));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 24px 60px -44px rgba(0, 0, 0, 0.9);
 }
 .glass-hover {
   transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
 }
 .glass-hover:hover {
   transform: translateY(-4px);
-  border-color: rgba(53,224,255,.4);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 30px 70px -34px rgba(61,123,255,.55);
+  border-color: rgba(45, 140, 255, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 30px 70px -40px rgba(45, 140, 255, 0.35);
 }
 
-/* Small mono construction label */
+/* Small condensed construction label — engineered, titanium, not blue */
 .note-label {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 9px;
-  letter-spacing: .2em;
-  color: rgba(147,161,196,.7);
+  font-family: var(--font-cond), "Arial Narrow", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--titanium);
 }
 
+/* One emphasised phrase per headline — blueprint → electric blue */
 .grad-text {
-  background: linear-gradient(100deg, var(--blue-2), var(--cyan));
+  background: linear-gradient(100deg, var(--blue), var(--blue-2));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.glow-blue { box-shadow: 0 20px 70px -25px rgba(61,123,255,.7); }
-.text-glow { text-shadow: 0 0 30px rgba(88,166,255,.45); }
+/* Restrained blueprint glow — never stronger than this */
+.glow-blue { box-shadow: 0 0 25px rgba(45,140,255,.12), 0 0 80px rgba(45,140,255,.05); }
+.text-glow { text-shadow: 0 0 24px rgba(45,140,255,.22); }
 
 .eyebrow {
   text-transform: uppercase;
@@ -113,14 +146,14 @@ h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-heig
   cursor: pointer; border: 1px solid transparent; white-space: nowrap;
 }
 .btn-primary {
-  background: linear-gradient(100deg, var(--blue), #6aa4ff);
-  color: #fff; box-shadow: 0 14px 40px -14px rgba(61,123,255,.8);
+  background: linear-gradient(120deg, var(--blue), #4A6DFF);
+  color: #fff; box-shadow: 0 14px 40px -18px rgba(45,140,255,.7);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 22px 55px -14px rgba(61,123,255,.95); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 55px -16px rgba(45,140,255,.85); }
 .btn-ghost {
-  background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.14); color: var(--text);
+  background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.12); color: var(--text);
 }
-.btn-ghost:hover { transform: translateY(-2px); background: rgba(255,255,255,.08); }
+.btn-ghost:hover { transform: translateY(-2px); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.2); }
 
 /* Section rhythm */
 .section { position: relative; z-index: 1; padding: 120px 0; }
@@ -133,15 +166,14 @@ h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-heig
 /* ============================================================
    ORIGIN — construction / blueprint primitives
    ============================================================ */
-.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
 
-/* Blueprint graph-paper grid — fine cells + heavier majors */
+/* Blueprint graph-paper grid — soft blueprint layer, fine + major lines */
 .bp-grid {
   background-image:
-    linear-gradient(rgba(61,123,255,.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61,123,255,.10) 1px, transparent 1px),
-    linear-gradient(rgba(61,123,255,.22) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61,123,255,.22) 1px, transparent 1px);
+    linear-gradient(rgba(45,140,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,140,255,.07) 1px, transparent 1px),
+    linear-gradient(rgba(45,140,255,.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,140,255,.14) 1px, transparent 1px);
   background-size: 28px 28px, 28px 28px, 140px 140px, 140px 140px;
   background-position: -1px -1px;
 }
@@ -154,7 +186,7 @@ h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-heig
   margin-left: 2px;
   vertical-align: -0.14em;
   background: var(--cyan);
-  box-shadow: 0 0 10px rgba(53,224,255,.9);
+  box-shadow: 0 0 10px rgba(141,235,255,.8);
   animation: bp-blink 1s steps(1) infinite;
 }
 @keyframes bp-blink { 0%,50% { opacity: 1 } 50.01%,100% { opacity: 0 } }
@@ -164,11 +196,26 @@ h1, h2, h3, h4 { font-family: var(--font-sora), system-ui, sans-serif; line-heig
   position: absolute;
   top: 0; bottom: 0;
   width: 2px;
-  background: linear-gradient(180deg, transparent, var(--cyan) 12%, #eaf6ff 50%, var(--cyan) 88%, transparent);
-  box-shadow: 0 0 18px 3px rgba(53,224,255,.8), 0 0 60px 12px rgba(61,123,255,.35);
+  background: linear-gradient(180deg, transparent, var(--blue-2) 12%, #eaf6ff 50%, var(--blue-2) 88%, transparent);
+  box-shadow: 0 0 18px 3px rgba(76,184,255,.7), 0 0 60px 12px rgba(45,140,255,.25);
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bp-caret::after { animation: none; }
+}
+
+/* Slow atmospheric scanner beam that sweeps the room every ~12s */
+@keyframes atmo-scan {
+  0%   { top: -10%; opacity: 0; }
+  8%   { opacity: 1; }
+  50%  { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: 110%; opacity: 0; }
+}
+.atmo-scan {
+  animation: atmo-scan 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .atmo-scan { animation: none; opacity: 0; }
 }

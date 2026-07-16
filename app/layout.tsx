@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Sora, Inter, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, Geist_Mono, Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
-const sora = Sora({
-  variable: "--font-sora",
+// Display / identity — industrial grotesk for the hero and headings.
+const display = Space_Grotesk({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
 });
 
 const inter = Inter({
@@ -22,6 +22,13 @@ const mono = Geist_Mono({
   weight: ["400", "500"],
 });
 
+// Tiny engineered labels — dimension tags, construction notes.
+const cond = Roboto_Condensed({
+  variable: "--font-cond",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
+
 export const metadata: Metadata = {
   title: "ORIGIN — Every Great Brand Starts as a Blueprint",
   description:
@@ -32,7 +39,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${sora.variable} ${inter.variable} ${mono.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${display.variable} ${inter.variable} ${mono.variable} ${cond.variable} antialiased`}
+    >
       <body>
         <SmoothScroll>{children}</SmoothScroll>
       </body>
