@@ -1,19 +1,18 @@
 "use client";
 
 /**
- * The persistent BUILD% dashboard — ORIGIN's spine.
- *
- * Reads `scrollState.progress` (0..1 down the page) every frame and reports it
- * as an engineering readout: PROJECT / CLIENT / STATUS / phase / %. The whole
- * site is "one continuous build" because this single number drives the story.
+ * The persistent BUILD% readout — ORIGIN's spine, styled as engineering
+ * metadata. Reads `scrollState.progress` each frame for the phase + percentage,
+ * and tilts / shines toward the cursor on hover (a premium 3D micro-interaction).
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { scrollState } from "@/lib/scroll";
 
-// Build phases mapped to progress — see the phase table in the plan.
+const SEGMENTS = 8;
+
 function phaseFor(pct: number): string {
-  if (pct >= 100) return "COMPLETE";
+  if (pct >= 100) return "READY";
   if (pct >= 92) return "GROWTH";
   if (pct >= 78) return "LAUNCH";
   if (pct >= 62) return "TESTING";
@@ -23,13 +22,20 @@ function phaseFor(pct: number): string {
   return "INITIATED";
 }
 
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="text-[9px] tracking-[0.2em] text-[var(--muted)]/70">{label}</div>
+      <div className="mt-0.5 text-[12px] tracking-[0.12em] text-[var(--text)]">{children}</div>
+    </div>
+  );
+}
+
 export default function BuildHud() {
   const [pct, setPct] = useState(0);
-
   useEffect(() => {
     let raf = 0;
     const loop = () => {
-      // setState with an unchanged value is a no-op in React, so this is cheap.
       setPct(Math.round(scrollState.progress * 100));
       raf = requestAnimationFrame(loop);
     };
@@ -37,41 +43,88 @@ export default function BuildHud() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // --- hover tilt + shine ---
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const [glare, setGlare] = useState({ x: 50, y: 50, o: 0 });
+  const [hovering, setHovering] = useState(false);
+
+  const onMove = (e: React.PointerEvent) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    setTilt({ rx: (py - 0.5) * -12, ry: (px - 0.5) * 12 });
+    setGlare({ x: px * 100, y: py * 100, o: 1 });
+  };
+  const onLeave = () => {
+    setHovering(false);
+    setTilt({ rx: 0, ry: 0 });
+    setGlare((g) => ({ ...g, o: 0 }));
+  };
+
   const done = pct >= 100;
-  const phase = phaseFor(pct);
+  const filled = Math.round((pct / 100) * SEGMENTS);
 
   return (
-    <div className="fixed right-4 top-[74px] z-40 w-[188px] select-none font-mono text-[11px] leading-tight sm:right-6">
-      <div className="glass rounded-lg px-3.5 py-3">
-        <div className="flex items-center justify-between text-[var(--muted)]">
-          <span className="tracking-[0.18em]">PROJECT</span>
-          <span className="font-semibold tracking-[0.2em] text-[var(--text)]">ORIGIN</span>
-        </div>
+    <div
+      className="pointer-events-none fixed right-8 top-[22vh] z-40 hidden w-[150px] select-none font-mono lg:block"
+      style={{ perspective: "800px" }}
+    >
+      <div
+        ref={cardRef}
+        onPointerMove={onMove}
+        onPointerEnter={() => setHovering(true)}
+        onPointerLeave={onLeave}
+        className="pointer-events-auto relative space-y-4 overflow-hidden rounded-lg border border-white/10 bg-[rgba(6,10,20,0.35)] px-4 py-4 backdrop-blur-md"
+        style={{
+          transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+          transition: hovering ? "transform 80ms linear" : "transform 500ms ease",
+          boxShadow: hovering ? "0 30px 60px -30px rgba(61,123,255,.6)" : "none",
+        }}
+      >
+        {/* cursor-following shine */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            opacity: glare.o,
+            transition: "opacity 300ms ease",
+            background: `radial-gradient(220px circle at ${glare.x}% ${glare.y}%, rgba(120,180,255,.18), transparent 55%)`,
+          }}
+        />
 
-        <div className="mt-2 flex items-center justify-between text-[var(--muted)]">
-          <span>CLIENT</span>
-          <span className="text-[var(--blue-2)]">YOUR BRAND</span>
-        </div>
+        <Field label="PROJECT">
+          <span className="font-semibold tracking-[0.18em]">ORIGIN</span>
+        </Field>
 
-        <div className="mt-1 flex items-center justify-between text-[var(--muted)]">
-          <span>STATUS</span>
-          <span className={done ? "text-[var(--green)]" : "text-[var(--cyan)]"}>
-            {done ? "READY" : "BUILDING"}
+        <Field label="STATUS">
+          <span className={done ? "text-[var(--green)]" : "text-[var(--blue-2)]"}>
+            {done ? "COMPLETE" : "BUILDING"}
           </span>
+        </Field>
+
+        <div>
+          <div className="text-[9px] tracking-[0.2em] text-[var(--muted)]/70">BUILD PROGRESS</div>
+          <div className="mt-1 text-[22px] font-semibold leading-none text-[var(--blue-2)] tabular-nums">
+            {pct}%
+          </div>
+          <div className="mt-2 flex gap-1">
+            {Array.from({ length: SEGMENTS }).map((_, i) => (
+              <span
+                key={i}
+                className="h-1.5 flex-1 rounded-[1px]"
+                style={{ background: i < filled ? "var(--blue)" : "rgba(255,255,255,.12)" }}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* progress bar */}
-        <div className="mt-2.5 h-[4px] w-full overflow-hidden rounded-full bg-white/10">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-[var(--blue)] to-[var(--cyan)] transition-[width] duration-150 ease-out"
-            style={{ width: `${pct}%` }}
-          />
-        </div>
+        <Field label="PHASE">
+          <span className="text-[var(--cyan)]">{phaseFor(pct)}</span>
+        </Field>
 
-        <div className="mt-2 flex items-center justify-between">
-          <span className="text-[var(--muted)]">{phase}</span>
-          <span className="tabular-nums font-semibold text-[var(--text)]">{pct}%</span>
-        </div>
+        <Field label="REVISION">001</Field>
       </div>
     </div>
   );
