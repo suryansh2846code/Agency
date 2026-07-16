@@ -81,7 +81,7 @@ export default function BuildHud() {
         style={{
           transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
           transition: hovering ? "transform 80ms linear" : "transform 500ms ease",
-          boxShadow: hovering ? "0 30px 60px -30px rgba(61,123,255,.6)" : "none",
+          boxShadow: hovering ? "0 30px 60px -34px rgba(45,140,255,.5)" : "none",
         }}
       >
         {/* cursor-following shine */}
@@ -90,7 +90,7 @@ export default function BuildHud() {
           style={{
             opacity: glare.o,
             transition: "opacity 300ms ease",
-            background: `radial-gradient(220px circle at ${glare.x}% ${glare.y}%, rgba(120,180,255,.18), transparent 55%)`,
+            background: `radial-gradient(220px circle at ${glare.x}% ${glare.y}%, rgba(76,184,255,.16), transparent 55%)`,
           }}
         />
 

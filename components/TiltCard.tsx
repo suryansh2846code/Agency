@@ -47,9 +47,9 @@ export default function TiltCard({
         style={{
           transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
           transition: hovering ? "transform 90ms linear" : "transform 500ms ease",
-          borderColor: hovering ? "rgba(53,224,255,.4)" : undefined,
+          borderColor: hovering ? "rgba(45,140,255,.4)" : undefined,
           boxShadow: hovering
-            ? "inset 0 1px 0 rgba(255,255,255,.09), 0 34px 70px -34px rgba(61,123,255,.6)"
+            ? "inset 0 1px 0 rgba(255,255,255,.07), 0 34px 70px -40px rgba(45,140,255,.4)"
             : undefined,
         }}
       >
@@ -58,7 +58,7 @@ export default function TiltCard({
           style={{
             opacity: glare.o,
             transition: "opacity 300ms ease",
-            background: `radial-gradient(340px circle at ${glare.x}% ${glare.y}%, rgba(120,180,255,.16), transparent 55%)`,
+            background: `radial-gradient(340px circle at ${glare.x}% ${glare.y}%, rgba(76,184,255,.14), transparent 55%)`,
           }}
         />
         {children}
