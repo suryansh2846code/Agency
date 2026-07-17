@@ -1,250 +1,161 @@
 "use client";
 
 /**
- * ORIGIN — the cold-open cinematic (~4.5s).
+ * ORIGIN cold-open — a dark industrial shutter over the screen that rolls up to
+ * reveal the workspace. The ORIGIN wordmark sits centered on the shutter and
+ * flies up + shrinks into the nav position as the shutter lifts, so it lands
+ * exactly where the real nav logo lives (a shared-element handoff that stitches
+ * the intro to the site).
  *
- * Black → blinking caret → "CLIENT: ORIGIN" types → blueprint grid + coords
- * unfold → the Blueprint Beam sweeps and "constructs" a wireframe → glass/light
- * flash → BUILD COMPLETE → fades out to reveal the page.
- *
- * One source of truth: a single rAF advances `t` (ms since start) and EVERY
- * beat is derived from it — same philosophy the whole site will use with BUILD%.
- * Plays once per session; respects prefers-reduced-motion; always skippable.
+ * TEMP: plays on every load for testing (restore the once-per-visit guard before
+ * launch). `?nointro=1` skips it; respects prefers-reduced-motion.
  */
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Wireframe from "@/components/blueprint/Wireframe";
+import { AnimatePresence, motion, useAnimate } from "framer-motion";
 
 const SEEN_KEY = "origin-intro-seen";
+const SLATS = 18;
+const LIFT_DELAY = 0.55;
+const LIFT_DUR = 1.25;
+const EASE = [0.76, 0, 0.24, 1] as const;
 
-// Beat boundaries (ms). SCALE stretches the whole cinematic uniformly
-// (~+0.5s overall) without changing the choreography.
-const SCALE = 1.11;
-const s = (ms: number) => Math.round(ms * SCALE);
-const TYPE_MS = s(108); // per-character typing interval
-const T = {
-  bootLine: s(300),
-  projectId: s(650),
-  typeStart: s(1000),
-  typeEnd: s(1650),
-  systemsOn: s(1750), // grid + coords + status
-  drawStart: s(2100),
-  drawEnd: s(3900),
-  complete: s(4100),
-  fadeOut: s(4550),
-  end: s(5050),
-};
-
-const CLIENT = "ORIGIN";
-const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
+type IntroWin = Window & { __originIntroDone?: boolean };
+// tell the nav its logo can appear (the shutter has opened / intro is skipped)
+function markIntroDone() {
+  (window as IntroWin).__originIntroDone = true;
+  window.dispatchEvent(new Event("origin:intro-done"));
+}
 
 export default function BuildIntro() {
+  const [play, setPlay] = useState(true);
   const [visible, setVisible] = useState(true);
-  const [play, setPlay] = useState(true); // false = skip rendering entirely
-  const [t, setT] = useState(0);
-  const raf = useRef(0);
+  const [scope, animate] = useAnimate();
+  const logoRef = useRef<HTMLDivElement>(null);
 
-  // Decide whether to play at all (client-only checks).
   useEffect(() => {
-    // Dev/QA escape hatch: ?nointro=1 skips straight to the page.
-    if (new URLSearchParams(window.location.search).has("nointro")) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || new URLSearchParams(window.location.search).has("nointro")) {
+      markIntroDone();
       setPlay(false);
       setVisible(false);
       return;
     }
+    // TEMP: plays every load. Restore once-per-visit before launch:
+    //   if (sessionStorage.getItem(SEEN_KEY) === "1") { markIntroDone(); setPlay(false); setVisible(false); return; }
 
-    // TEMP (testing): play on EVERY load. Before launch, restore the
-    // once-per-visit guard below so refreshes/returns don't re-trap visitors:
-    //   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    //   if (reduce || sessionStorage.getItem(SEEN_KEY) === "1") { setPlay(false); setVisible(false); return; }
-
-    // Lock scroll + pin to top while the cinematic runs.
+    (window as IntroWin).__originIntroDone = false; // hide the nav logo while playing
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.scrollTo(0, 0);
 
-    const start = performance.now();
-    const loop = (now: number) => {
-      const elapsed = now - start;
-      setT(elapsed);
-      if (elapsed >= T.fadeOut) {
-        finish();
-        return;
-      }
-      raf.current = requestAnimationFrame(loop);
-    };
-    raf.current = requestAnimationFrame(loop);
+    // shared-element: dock the intro logo onto the REAL nav logo's exact rect,
+    // then hold it centered + scaled and fly it home as the shutter lifts.
+    const el = logoRef.current;
+    const navLogo = document.querySelector<HTMLElement>('header a[href="#top"]');
+    if (el && navLogo) {
+      const nav = navLogo.getBoundingClientRect();
+      el.style.left = `${nav.left}px`;
+      el.style.top = `${nav.top}px`;
+      const r = el.getBoundingClientRect();
+      const dx = window.innerWidth / 2 - (r.left + r.width / 2);
+      const dy = window.innerHeight / 2 - (r.top + r.height / 2);
+      const total = LIFT_DELAY + LIFT_DUR;
+      animate(
+        el,
+        { x: [dx, dx, 0], y: [dy, dy, 0], scale: [3, 3, 1], opacity: [1, 1, 1] },
+        { duration: total, times: [0, LIFT_DELAY / total, 1], ease: EASE }
+      );
+    }
 
+    const t = window.setTimeout(finish, (LIFT_DELAY + LIFT_DUR + 0.5) * 1000);
     function finish() {
-      cancelAnimationFrame(raf.current);
       sessionStorage.setItem(SEEN_KEY, "1");
       document.body.style.overflow = prevOverflow;
       setVisible(false);
+      markIntroDone();
     }
-
     return () => {
-      cancelAnimationFrame(raf.current);
+      window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
     };
-  }, []);
+  }, [animate]);
 
   const skip = () => {
-    cancelAnimationFrame(raf.current);
     sessionStorage.setItem(SEEN_KEY, "1");
     document.body.style.overflow = "";
     setVisible(false);
+    markIntroDone();
   };
 
   if (!play) return null;
-
-  // ---- Derived beat values --------------------------------------------------
-  const typed = CLIENT.slice(
-    0,
-    Math.max(0, Math.min(CLIENT.length, Math.floor((t - T.typeStart) / TYPE_MS)))
-  );
-  const showBoot = t > T.bootLine;
-  const showId = t > T.projectId;
-  const showClient = t > T.typeStart;
-  const systemsOn = t > T.systemsOn;
-  const draw = clamp01((t - T.drawStart) / (T.drawEnd - T.drawStart));
-  const built = t > T.drawEnd;
-  const complete = t > T.complete;
-  const pct = Math.round(clamp01((t - T.typeStart) / (T.drawEnd - T.typeStart)) * 100);
 
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
+          ref={scope}
           key="origin-intro"
-          className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-[#04060d] font-mono text-[var(--text)]"
+          className="fixed inset-0 z-[200] overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 0.3 }}
         >
-          {/* Blueprint grid — fades in when systems come online */}
-          <div
-            className="bp-grid absolute inset-0 transition-opacity duration-700"
-            style={{ opacity: systemsOn ? 1 : 0 }}
-          />
-          {/* Vignette for depth */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,#04060d_85%)]" />
-
-          {/* Terminal readout — top-left */}
-          <div className="absolute left-6 top-6 text-[12px] leading-relaxed sm:left-10 sm:top-10 sm:text-[13px]">
-            {showBoot && (
-              <div className="text-[var(--muted)]">
-                &gt; INITIALIZING PROJECT<span className="bp-caret" />
-              </div>
-            )}
-            {showId && <div className="text-[var(--muted)]">PROJECT_0001</div>}
-            {showClient && (
-              <div className="mt-1 text-[var(--cyan)]">
-                CLIENT: <span className="text-[var(--text)]">{typed}</span>
-                {typed.length < CLIENT.length && <span className="bp-caret" />}
-              </div>
-            )}
-            {systemsOn && (
-              <div className="mt-1 text-[var(--muted)]">
-                STATUS: <span className="text-[var(--blue-2)]">BUILDING</span>
-              </div>
-            )}
-          </div>
-
-          {/* Corner construction notes */}
-          {systemsOn && (
-            <>
-              <Note className="right-6 top-6 sm:right-10 sm:top-10">GRID LOCKED · 1280PX</Note>
-              <Note className="bottom-6 right-6 sm:bottom-10 sm:right-10 text-right">
-                EXPORT TARGET · WEB
-              </Note>
-            </>
-          )}
-
-          {/* ---- The frame being constructed ---- */}
-          <div className="relative aspect-[400/260] w-[min(78vw,620px)]">
-            {/* dimension label */}
-            {systemsOn && (
-              <div className="absolute -top-6 left-0 flex w-full items-center gap-2 text-[10px] text-[var(--blue-2)]/70">
-                <span>0</span>
-                <span className="h-px flex-1 bg-[var(--blue-2)]/30" />
-                <span>1440 PX</span>
-              </div>
-            )}
-
-            {/* Drawn wireframe — revealed left→right behind the beam */}
+          {/* the shutter — dark slats that roll up to reveal the workspace */}
+          <motion.div
+            className="absolute inset-0 flex flex-col bg-[var(--obsidian)]"
+            initial={{ y: 0 }}
+            animate={{ y: "-105%" }}
+            transition={{ delay: LIFT_DELAY, duration: LIFT_DUR, ease: EASE }}
+            onAnimationComplete={() => {
+              sessionStorage.setItem(SEEN_KEY, "1");
+              document.body.style.overflow = "";
+              setVisible(false);
+              markIntroDone();
+            }}
+          >
+            {Array.from({ length: SLATS }).map((_, i) => (
+              <div
+                key={i}
+                className="w-full flex-1 border-t border-black/40"
+                style={{
+                  background: "linear-gradient(180deg, #0E1115 0%, #0A0B0E 55%, #070809 100%)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,.025)",
+                }}
+              />
+            ))}
+            {/* light-leak glow riding the opening edge */}
             <div
-              className="absolute inset-0"
-              style={{ clipPath: `inset(0 ${(1 - draw) * 100}% 0 0)` }}
-            >
-              <Wireframe />
-            </div>
-
-            {/* Glass / light fill after construction completes */}
-            <div
-              className="absolute inset-0 rounded-[6px] transition-opacity duration-500"
+              className="absolute inset-x-0 bottom-0 h-[3px]"
               style={{
-                opacity: built ? 1 : 0,
-                background:
-                  "linear-gradient(135deg, rgba(61,123,255,.16), rgba(53,224,255,.05) 45%, transparent 70%)",
-                boxShadow: "inset 0 0 60px rgba(61,123,255,.25)",
+                background: "linear-gradient(90deg, transparent, rgba(141,235,255,.9), transparent)",
+                boxShadow: "0 0 24px 4px rgba(76,184,255,.6)",
               }}
             />
+          </motion.div>
 
-            {/* The Blueprint Beam — leads the construction */}
-            {t > T.drawStart && !built && (
-              <div className="bp-beam" style={{ left: `${draw * 100}%` }} />
-            )}
-
+          {/* shared ORIGIN wordmark — fixed onto the real nav logo's rect (set in
+              the effect), scaled up to centre, then flown home as the shutter lifts. */}
+          <div
+            ref={logoRef}
+            className="pointer-events-none fixed z-10 inline-flex items-baseline gap-2.5 will-change-transform"
+            style={{ opacity: 0, left: 0, top: 0, transformOrigin: "center" }}
+          >
+            <span className="font-head text-xl font-extrabold tracking-[0.16em]">ORIGIN</span>
+            <span className="hidden font-mono text-[9px] tracking-[0.3em] text-[var(--muted)] sm:inline">
+              DIGITAL AGENCY
+            </span>
           </div>
-
-          {/* BUILD % readout — bottom-left (seed of the persistent HUD) */}
-          {showClient && (
-            <div className="absolute bottom-6 left-6 w-[190px] sm:bottom-10 sm:left-10">
-              <div className="flex items-center justify-between text-[11px] text-[var(--muted)]">
-                <span>BUILD</span>
-                <span className="text-[var(--text)]">{pct}%</span>
-              </div>
-              <div className="mt-1.5 h-[3px] w-full overflow-hidden rounded-full bg-white/10">
-                <div
-                  className="h-full bg-gradient-to-r from-[var(--blue)] to-[var(--cyan)]"
-                  style={{ width: `${pct}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* BUILD COMPLETE stamp */}
-          <AnimatePresence>
-            {complete && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute left-1/2 top-[calc(50%+180px)] -translate-x-1/2 whitespace-nowrap text-[13px] tracking-[0.35em] text-[var(--cyan)]"
-              >
-                BUILD COMPLETE
-              </motion.div>
-            )}
-          </AnimatePresence>
 
           {/* Skip */}
           <button
             onClick={skip}
-            className="absolute bottom-6 right-6 rounded-full border border-white/15 px-4 py-1.5 text-[11px] tracking-[0.2em] text-[var(--muted)] transition hover:border-white/40 hover:text-[var(--text)] sm:bottom-10 sm:right-10"
+            className="absolute bottom-8 right-8 z-10 rounded-full border border-white/15 px-4 py-1.5 font-mono text-[11px] tracking-[0.2em] text-[var(--titanium)] transition hover:border-white/40 hover:text-[var(--text)]"
           >
             SKIP
           </button>
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-function Note({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`absolute text-[10px] tracking-[0.15em] text-[var(--blue-2)]/60 ${className}`}>
-      {children}
-    </div>
   );
 }

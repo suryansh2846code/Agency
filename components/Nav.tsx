@@ -12,11 +12,29 @@ const links = [
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  // The logo stays hidden until the cold-open shutter opens (the intro's flying
+  // ORIGIN lands here). Its <a> keeps its layout so the intro can measure it.
+  const [logoShown, setLogoShown] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if ((window as Window & { __originIntroDone?: boolean }).__originIntroDone === true) {
+      setLogoShown(true);
+      return;
+    }
+    const onDone = () => setLogoShown(true);
+    window.addEventListener("origin:intro-done", onDone);
+    const fallback = window.setTimeout(() => setLogoShown(true), 6000);
+    return () => {
+      window.removeEventListener("origin:intro-done", onDone);
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   return (
@@ -33,7 +51,11 @@ export default function Nav() {
               : ""
           }`}
         >
-          <a href="#top" className="flex items-baseline gap-2.5">
+          <a
+            href="#top"
+            className="flex items-baseline gap-2.5 transition-opacity duration-300"
+            style={{ opacity: logoShown ? 1 : 0 }}
+          >
             <span className="font-head text-xl font-extrabold tracking-[0.16em]">ORIGIN</span>
             <span className="hidden font-mono text-[9px] tracking-[0.3em] text-[var(--muted)] sm:inline">
               DIGITAL AGENCY
