@@ -1,0 +1,149 @@
+/* ============================================================
+   Secondary / Senior template (ORIGIN product) — "editorial
+   scrapbook" direction (structure & style inspired by modern
+   international-school sites). Warm-gray canvas, bold two-tone
+   grotesk headlines, hand-drawn doodles, polaroid + sketch cards,
+   multi-accent buttons. Copy is generic/reusable; images, logo,
+   name and colours are placeholders the client replaces.
+   ============================================================ */
+
+.senior {
+  --brand: #2f55b0; /* primary (blue) */
+  --red: #dc4633; /* accent 1 (bright) */
+  --gold: #b28b3c; /* accent 2 */
+
+  --ink: #1c1c1c;
+  --ink-soft: #4c4c49;
+  --paper: #dcdad3; /* warm gray canvas */
+  --paper-2: #e8e6e0;
+  --line: #c7c4bb;
+
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-body, ui-sans-serif), system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.senior h1,
+.senior h2,
+.senior h3,
+.senior h4 {
+  font-family: var(--font-head-senior), var(--font-body), sans-serif;
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+.senior-display {
+  font-family: var(--font-head-senior), var(--font-body), sans-serif;
+}
+.senior-accent {
+  color: var(--red);
+}
+
+.senior-container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* boxed wordmark logo (placeholder) */
+.senior-logo {
+  display: inline-flex;
+  align-items: center;
+  border: 3px solid var(--ink);
+  border-radius: 6px;
+  padding: 16px 26px;
+  font-family: var(--font-head-senior), sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1;
+}
+
+/* chunky rectangular buttons */
+.senior-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 6px;
+  padding: 15px 26px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 0.16s ease, transform 0.16s ease;
+  border: none;
+  color: #fff;
+  white-space: nowrap;
+}
+.senior-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+.senior-btn-blue { background: var(--brand); }
+.senior-btn-red { background: var(--red); }
+.senior-btn-gold { background: var(--gold); }
+.senior-btn-dark { background: var(--ink); }
+
+/* photo placeholders */
+.senior-photo {
+  background:
+    linear-gradient(150deg, color-mix(in srgb, var(--brand) 26%, #cfd3da), color-mix(in srgb, var(--gold) 26%, #dcdad3));
+  position: relative;
+  overflow: hidden;
+}
+.senior-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 32%, rgba(255, 255, 255, 0.55) 0 5px, transparent 6px),
+    linear-gradient(135deg, transparent 60%, rgba(28, 28, 28, 0.16) 60% 64%, transparent 64%);
+  opacity: 0.55;
+}
+
+/* polaroid — white frame, tilt applied inline */
+.polaroid {
+  background: #fbfaf7;
+  padding: 10px 10px 14px;
+  box-shadow: 0 24px 44px -24px rgba(20, 18, 12, 0.55);
+}
+
+/* sketch card — hand-drawn black outline (scrapbook) */
+.sketch-card {
+  background: var(--paper-2);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  box-shadow: 5px 6px 0 -1px rgba(28, 28, 28, 0.9);
+}
+
+/* dotted separator / pattern — muted, matches the canvas */
+.senior-dots {
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 34%, transparent) 1.7px, transparent 1.9px);
+  background-size: 24px 22px;
+}
+
+.senior-section {
+  padding: 132px 0;
+}
+
+/* stage-swap fade (interactive journey) */
+.senior-fade {
+  animation: seniorFade 0.4s ease both;
+}
+@keyframes seniorFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
