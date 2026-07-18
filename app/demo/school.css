@@ -1,0 +1,152 @@
+/* ============================================================
+   Basic school website template (ORIGIN product) — "scrapbook"
+   direction: warm graph-paper, big bold type, polaroid photos on
+   binder clips, sticky notes. Config drives --brand + --accent;
+   the paper/ink neutrals stay fixed so any brand colour works.
+   ============================================================ */
+
+.school {
+  --brand: #3d53c9; /* per-client (set inline from config) */
+  --accent: #f3c637; /* per-client playful accent (yellow default) */
+  --brand-ink: color-mix(in srgb, var(--brand) 68%, #0a1024);
+  --brand-deep: color-mix(in srgb, var(--brand) 52%, #050a1c);
+  --brand-soft: color-mix(in srgb, var(--brand) 14%, #fffdf6);
+
+  --paper: #f2eee1; /* warm cream */
+  --ink: #2a241d; /* warm near-black */
+  --ink-soft: #6b6357;
+  --line: rgba(42, 36, 29, 0.14);
+  --grid: rgba(42, 36, 29, 0.06);
+
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 46px 46px;
+  font-family: var(--font-body, ui-sans-serif), system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.school-head {
+  font-family: var(--font-head-school), var(--font-body), sans-serif;
+}
+.school-hand {
+  font-family: var(--font-hand), "Comic Sans MS", cursive;
+}
+
+.school h1,
+.school h2,
+.school h3,
+.school h4 {
+  font-family: var(--font-head-school), var(--font-body), sans-serif;
+  color: var(--ink);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.school-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.school-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+/* buttons — chunky and rounded */
+.school-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 13px 26px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease, background 0.16s ease;
+  border: 2px solid transparent;
+  white-space: nowrap;
+}
+.school-btn-primary {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 12px 0 -4px var(--brand-deep);
+}
+.school-btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+.school-btn-accent {
+  background: var(--accent);
+  color: #2a241d;
+  box-shadow: 0 12px 0 -4px color-mix(in srgb, var(--accent) 70%, #000);
+}
+.school-btn-accent:hover {
+  transform: translateY(-2px);
+}
+.school-btn-ghost {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  border-color: transparent;
+}
+.school-btn-ghost:hover {
+  transform: translateY(-2px);
+}
+.school-btn-outline {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.school-btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* cards */
+.school-card {
+  background: #fffdf7;
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: 6px 8px 0 -1px var(--ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.school-card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 12px 0 -1px var(--ink);
+}
+
+.school-section {
+  padding: 96px 0;
+}
+
+/* photo placeholder — soft branded gradient until real images drop in */
+.school-photo {
+  background:
+    radial-gradient(120% 120% at 25% 20%, color-mix(in srgb, var(--brand) 30%, #fff), transparent 55%),
+    linear-gradient(140deg, var(--brand-soft), color-mix(in srgb, var(--accent) 30%, #fff));
+  position: relative;
+  overflow: hidden;
+}
+
+/* polaroid — a photo with a white frame, tilted, on a binder clip */
+.polaroid {
+  background: #fffdf7;
+  padding: 12px 12px 20px;
+  border-radius: 3px;
+  box-shadow: 0 26px 50px -26px rgba(20, 16, 10, 0.55);
+}
+
+/* sticky note */
+.sticky-note {
+  background: var(--accent);
+  color: #2a241d;
+  box-shadow: 0 18px 34px -18px rgba(20, 16, 10, 0.5);
+}
