@@ -19,6 +19,31 @@ brands._
   build phase (INITIATED → RESEARCH → BLUEPRINT → … → GROWTH → COMPLETE). One
   number drives the whole story.
 
+## School website templates (the product)
+
+ORIGIN sells school websites in tiers (Basic / Professional / Premium). The
+templates are **ORIGIN's internal tooling** — a school receives a finished
+site, not the template. Each template is **config-driven**: `config.ts` is the
+only file edited per client (name, colours, copy, photos), and one or a few
+brand tokens re-theme the whole site via CSS `color-mix`. Copy is generic and
+reusable; images/logo/name are placeholders.
+
+Two aesthetics are built, for the two age wings:
+
+- **Primary / Kindergarten** — playful "scrapbook" style (Poppins + Caveat,
+  polaroids, stickers, sticky notes). Route: **`/demo`**.
+- **Secondary / Senior** — mature editorial style (Archivo display, warm-gray
+  canvas, two-tone grotesk headlines, hand-drawn doodles, polaroid + sketch
+  cards, multi-accent buttons). Route: **`/senior`**. Highlights: a seamless
+  horizontal **education-journey** scroller (intro panel → cards, per stage), a
+  **statement** whose hand-drawn annotations draw on tied to scroll position,
+  and a staggered **spotlight** collage with hover (photo + caption converge and
+  invert colours).
+
+Both live under their own nested route layout so they inherit the root layout
+but override the dark canvas with their own light theme (scoped by a wrapper
+`.school` / `.senior` class).
+
 ## Tech stack
 
 - **Next.js 16** (App Router, TypeScript) + **Tailwind CSS v4**
@@ -47,6 +72,12 @@ components/
   TiltCard.tsx      # reusable glass card with hover tilt + shine
   SectionHeader.tsx # shared section heading
   Nav.tsx  Footer.tsx  Reveal.tsx  SmoothScroll.tsx
+  school/           # primary/kindergarten template chrome (SchoolNav, SchoolFooter)
+  senior/           # senior template pieces (SeniorNav/Footer + interactive
+                    #   SeniorJourney, SeniorStatement)
+app/demo/           # primary/kindergarten template (config.ts + scoped school.css)
+app/senior/         # senior template (config.ts + scoped senior.css)
+public/senior/      # senior template assets (hand-drawn arrow PNGs)
 lib/
   scroll.ts         # shared scroll state (page progress + hero-build progress)
 legacy/             # the original static HTML/CSS/JS site (archived)
@@ -121,6 +152,15 @@ with no joints, so it couldn't articulate — only slide rigidly. Rather than ri
 it, we pivoted the hero to a **pre-rendered video scrubbed by scroll**, which
 keeps the fixed-base, articulated motion and a photoreal look. `HeroScene` is
 kept parked for possible revival.
+
+**School templates (2026-07):** started ORIGIN's product — reusable,
+config-driven school websites. Built the **primary/kindergarten** scrapbook
+template (`/demo`) and the **secondary/senior** editorial template (`/senior`),
+the latter matched section-by-section to a modern international-school reference
+(structure/style only — generic copy + placeholders for copyright safety).
+Senior template includes a seamless horizontal education-journey scroller, a
+scroll-driven annotation draw-on, and a hover-interactive spotlight collage.
+Next: the inner pages (About, Academics, Student Life, Admissions + form).
 
 **Where we left off:** run `git log --oneline -1`. All work lives on **`main`**
 (single-branch workflow — see [Branching](#branching)).
