@@ -52,9 +52,11 @@ export const senior = {
         title: "Early Years",
         body: "In the early years, our youngest learners explore, play and wonder. Through a hands-on, inquiry-led approach we nurture little minds to think big and dream even bigger.",
         cta: ["Early years at School", "/senior/academics"] as [string, string],
+        main: "/senior/img/p14.jpg",
+        small: "/senior/img/p1.jpg",
         cards: [
-          { title: "Enriching environment", desc: "We create a space where children can tinker, try new things, observe nature and figure the world out in their own way — because learning happens best when it feels natural and exciting." },
-          { title: "Play-based learning", desc: "Freedom to experiment and explore from the very start. Every classroom is built to spark curiosity and let young learners grow through discovery." },
+          { title: "Enriching environment", desc: "We create a space where children can tinker, try new things, observe nature and figure the world out in their own way — because learning happens best when it feels natural and exciting.", img: "/senior/img/p4.jpg" },
+          { title: "Play-based learning", desc: "Freedom to experiment and explore from the very start. Every classroom is built to spark curiosity and let young learners grow through discovery.", img: "/senior/img/p6.jpg" },
         ],
       },
       {
@@ -62,9 +64,11 @@ export const senior = {
         title: "Elementary School",
         body: "In the elementary years, students build a strong foundation for everything ahead — with literacy woven through every subject, a deep conceptual approach to maths, and space for self-awareness and communication to come to life.",
         cta: ["Life as an elementary learner", "/senior/academics"] as [string, string],
+        main: "/senior/img/p10.jpg",
+        small: "/senior/img/p5.jpg",
         cards: [
-          { title: "Student voice", desc: "Whether it's sharing ideas in class, leading projects or making tough decisions, we believe student voices matter — and we give them the freedom to be active participants in their own learning." },
-          { title: "Problem solving", desc: "From unravelling mysteries to cracking codes, every day brings a new opportunity to think critically and conquer challenges." },
+          { title: "Student voice", desc: "Whether it's sharing ideas in class, leading projects or making tough decisions, we believe student voices matter — and we give them the freedom to be active participants in their own learning.", img: "/senior/img/p11.jpg" },
+          { title: "Problem solving", desc: "From unravelling mysteries to cracking codes, every day brings a new opportunity to think critically and conquer challenges.", img: "/senior/img/p15.jpg" },
         ],
       },
       {
@@ -72,9 +76,11 @@ export const senior = {
         title: "Middle School",
         body: "We know how much changes during the middle years, so we stay tuned in to what makes this age group tick. We tailor our teaching to help each student grow academically, socially and personally — in every way possible.",
         cta: ["The middle school years", "/senior/academics"] as [string, string],
+        main: "/senior/img/p19.jpg",
+        small: "/senior/img/p3.jpg",
         cards: [
-          { title: "Inquiry-based approach", desc: "We encourage students to roll up their sleeves, get hands-on and uncover knowledge by digging into real-world problems — chasing that lightbulb moment when they realise they're investigators on a quest for understanding." },
-          { title: "Conceptual learning", desc: "Learning isn't just about facts, it's about grasping the big ideas. We break tricky concepts into bite-sized pieces that actually make sense." },
+          { title: "Inquiry-based approach", desc: "We encourage students to roll up their sleeves, get hands-on and uncover knowledge by digging into real-world problems — chasing that lightbulb moment when they realise they're investigators on a quest for understanding.", img: "/senior/img/p13.jpg" },
+          { title: "Conceptual learning", desc: "Learning isn't just about facts, it's about grasping the big ideas. We break tricky concepts into bite-sized pieces that actually make sense.", img: "/senior/img/p15.jpg" },
         ],
       },
       {
@@ -82,9 +88,11 @@ export const senior = {
         title: "High School",
         body: "High school is about far more than preparing for university. Whether they're crunching numbers, crafting essays or hitting the field, our students develop their passions and become the best versions of themselves — ready to lead.",
         cta: ["Explore high school life", "/senior/student-life"] as [string, string],
+        main: "/senior/img/p12.jpg",
+        small: "/senior/img/p11.jpg",
         cards: [
-          { title: "Individualised pathways", desc: "There's no one-size-fits-all approach. With a broad range of advanced courses and electives, students can dive deep into their strengths or explore new interests — free to pave their own academic path." },
-          { title: "University counselling", desc: "From building a standout application to understanding campus life, our counsellors are experts at demystifying the next step — so students feel confident about what comes after school." },
+          { title: "Individualised pathways", desc: "There's no one-size-fits-all approach. With a broad range of advanced courses and electives, students can dive deep into their strengths or explore new interests — free to pave their own academic path.", img: "/senior/img/p2.jpg" },
+          { title: "University counselling", desc: "From building a standout application to understanding campus life, our counsellors are experts at demystifying the next step — so students feel confident about what comes after school.", img: "/senior/img/p5.jpg" },
         ],
       },
       {
@@ -92,9 +100,11 @@ export const senior = {
         title: "Alumni",
         body: "Our alumni aren't just former students — they're lifelong members of a tight-knit community. Even decades on, they stay connected, return to catch up with favourite teachers, and share their wisdom with the students who follow.",
         cta: ["The journey continues", "/senior/about"] as [string, string],
+        main: "/senior/img/p16.jpg",
+        small: "/senior/img/p18.jpg",
         cards: [
-          { title: "Global citizens", desc: "Our alumni make their mark all over the world — and still find their way back to familiar ground to pay it forward, lending their time and expertise to nurture the next generation." },
-          { title: "Changemakers", desc: "From sparking innovation in industry to leading grassroots movements, our graduates aren't afraid to shake things up wherever they are." },
+          { title: "Global citizens", desc: "Our alumni make their mark all over the world — and still find their way back to familiar ground to pay it forward, lending their time and expertise to nurture the next generation.", img: "/senior/img/p20.jpg" },
+          { title: "Changemakers", desc: "From sparking innovation in industry to leading grassroots movements, our graduates aren't afraid to shake things up wherever they are.", img: "/senior/img/p17.jpg" },
         ],
       },
     ],

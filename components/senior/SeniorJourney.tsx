@@ -116,11 +116,15 @@ export default function SeniorJourney() {
                 <div className="relative mx-auto w-[300px] pb-14 pr-10 pt-4 sm:w-[360px]">
                   {/* main white photo — same overall size as the black cards, gently tilted */}
                   <div className="polaroid w-full rotate-2 shadow-[0_34px_66px_-42px_rgba(20,18,12,.5)]">
-                    <div className="senior-photo aspect-[4/5] w-full" />
+                    <div className="senior-photo aspect-[4/5] w-full">
+                      {stage.main && <img src={stage.main} alt="" className="h-full w-full object-cover" />}
+                    </div>
                   </div>
                   {/* smaller white photo overlapping the corner, tilted the other way */}
                   <div className="polaroid absolute -bottom-2 -right-4 w-40 -rotate-[5deg] shadow-[0_24px_44px_-28px_rgba(20,18,12,.55)] sm:w-48">
-                    <div className="senior-photo aspect-[4/3] w-full" />
+                    <div className="senior-photo aspect-[4/3] w-full">
+                      {stage.small && <img src={stage.small} alt="" className="h-full w-full object-cover" />}
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -139,7 +143,9 @@ export default function SeniorJourney() {
                 key={c.title}
                 className={`sketch-card w-[300px] shrink-0 snap-start self-start overflow-hidden sm:w-[360px] ${i % 2 ? "-rotate-2 translate-y-8" : "rotate-2 translate-y-1"}`}
               >
-                <div className="senior-photo aspect-[4/3] w-full" />
+                <div className="senior-photo aspect-[4/3] w-full">
+                  {c.img && <img src={c.img} alt="" className="h-full w-full object-cover" />}
+                </div>
                 <div className="p-6">
                   <h4 className="senior-display text-xl font-extrabold">{c.title}</h4>
                   <p className="mt-2 text-[15px] leading-relaxed text-[var(--ink-soft)]">{c.desc}</p>
