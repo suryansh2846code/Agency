@@ -12,12 +12,30 @@ brands._
 - **Cold-open cinematic** — on load, a terminal boots (`CLIENT: ORIGIN`), a
   blueprint grid unfolds, and the **Blueprint Beam** (ORIGIN's signature scan
   line) draws a site wireframe. ~5s, skippable, respects reduced-motion.
-- **Scroll-scrubbed hero** — a pinned hero plays a video of a robotic arm
-  building the blueprint on a drafting desk; scrolling scrubs it frame-by-frame
-  (forward builds, back un-builds).
+- **Scroll-scrubbed hero** — a pinned hero (`h-[240vh]`, sticky inner) plays a
+  robotic arm building the blueprint on a drafting desk. Scroll position drives
+  it frame-by-frame (forward builds, back un-builds). It renders a **300-frame
+  image sequence painted to a canvas** (Apple-style) — see [How the hero scrub
+  works](#how-the-hero-scrub-works).
 - **BUILD % spine** — a fixed engineering HUD reads page scroll and reports the
   build phase (INITIATED → RESEARCH → BLUEPRINT → … → GROWTH → COMPLETE). One
   number drives the whole story.
+
+### How the hero scrub works
+
+The story runs on **one shared number**, `scrollState.heroBuild` (0..1),
+updated every frame from the pinned hero's position on screen
+(`components/sections/Hero.tsx`), independent of React re-renders (`lib/scroll.ts`).
+
+- **`HeroFrames`** (`components/scene/HeroFrames.tsx`) preloads the 300 JPEG
+  frames, then on each `requestAnimationFrame` maps `heroBuild → frame index`,
+  eases toward it (so scroll jumps don't snap), and paints that frame to a
+  `<canvas>` with cover-fit (64% horizontal focus) and the shared colour grade.
+  Painting a pre-decoded image is smoother than seeking a `<video>`.
+- The **same `heroBuild`** also feeds the BUILD% HUD, so the number and the arm
+  stay in lockstep.
+- `?hp=<0..1>` pins `heroBuild` to a fixed value for inspecting/screenshotting a
+  single frame; `?nointro=1` skips the cold-open.
 
 ## School website templates (the product)
 
@@ -33,16 +51,55 @@ Two aesthetics are built, for the two age wings:
 - **Primary / Kindergarten** — playful "scrapbook" style (Poppins + Caveat,
   polaroids, stickers, sticky notes). Route: **`/demo`**.
 - **Secondary / Senior** — mature editorial style (Archivo display, warm-gray
-  canvas, two-tone grotesk headlines, hand-drawn doodles, polaroid + sketch
-  cards, multi-accent buttons). Route: **`/senior`**. Highlights: a seamless
-  horizontal **education-journey** scroller (intro panel → cards, per stage), a
-  **statement** whose hand-drawn annotations draw on tied to scroll position,
-  and a staggered **spotlight** collage with hover (photo + caption converge and
-  invert colours).
+  canvas, two-tone grotesk headlines, hand-drawn arrow doodles, polaroid +
+  sketch cards, multi-accent buttons). Route: **`/senior`**.
 
 Both live under their own nested route layout so they inherit the root layout
 but override the dark canvas with their own light theme (scoped by a wrapper
-`.school` / `.senior` class).
+`.school` / `.senior` class). Colours come from a few brand tokens set inline on
+that wrapper; the rest of the palette is derived from them with `color-mix`.
+
+### The senior home page, section by section
+
+Built (structure/style only) to match a modern international-school reference,
+with generic copy + placeholder identity for copyright safety. Top to bottom:
+
+1. **Nav** (`SeniorNav`) — boxed wordmark logo, utility links, search/calendar
+   icons, and a full-screen menu toggle.
+2. **Hero** — big two-tone headline (`Find Yourself / at School.`), a dominant
+   photo collage (main photo + two tilted polaroids + a crest sticker), and a
+   hand-drawn curl arrow (`arrow-curl.png`) pointing into it.
+3. **Who we are / "a day" video** — intro copy, dotted separators, and a video
+   poster with a play button.
+4. **Education journey** (`SeniorJourney`, client) — the centrepiece: a **single
+   seamless horizontal scroller**. Per stage it lays out an intro panel (two
+   white-border tilted photos + text/CTA) that flows straight into that stage's
+   black-border cards, then into the next stage. A **timeline** above tracks the
+   scroll position (fills + highlights the active stage) and smooth-scrolls to a
+   stage when clicked; blue arrows nudge the scroll.
+5. **Meet the people / Life in & out** — a big **dotted-grid rectangle** holding
+   two tilted polaroids, a heading, and multi-accent buttons (mirrored L/R).
+6. **Statement** (`SeniorStatement`, client) — a large line whose hand-drawn
+   annotations (circle / wave / underline) **draw on tied to scroll**: the
+   stroke `dashoffset` maps 1:1 to how far the block has travelled through the
+   viewport, staggered so they draw in sequence.
+7. **Spotlight** — a staggered two-column photo collage; each card's caption bar
+   overlaps the photo and, on hover, the photo + caption **converge and invert
+   colours**.
+8. **Footer** (`SeniorFooter`) — campuses, colour-coded action buttons, socials,
+   affiliate logos.
+
+### Editing / theming a client site
+
+- **`app/senior/config.ts` is the only content file.** Name, brand colours,
+  nav, and every section's copy + image paths live here — including the journey
+  `stages[]` (each with `main`/`small` photos and `cards[].img`).
+- **Photos** are dropped into `public/senior/img/` and referenced from config;
+  the shared photo helpers (`Polaroid`, `SpotCard`, journey slots) take a `src`
+  and crop with `object-cover`, so any orientation fits any slot.
+- **Hand-drawn arrows** are real PNG assets (`public/senior/arrow-*.png`),
+  placed with `mix-blend-multiply` so their white backgrounds drop out on the
+  canvas.
 
 ## Tech stack
 
@@ -64,7 +121,8 @@ components/
   intro/            # BuildIntro — the cold-open cinematic
   hud/              # BuildHud — the tiltable BUILD% metadata panel
   blueprint/        # Wireframe — shared blueprint SVG primitive
-  scene/            # HeroVideo (scroll-scrubbed video hero)
+  scene/            # HeroFrames (scroll-scrubbed 300-frame canvas hero — live)
+                    #   HeroVideo (parked video-scrub hero — superseded)
                     #   HeroScene (parked real-time 3D hero — see devlog)
   sections/         # Hero + the marketing sections (glassmorphism)
   Atmosphere.tsx    # inferred industrial-lab backdrop (wakes on scroll)
@@ -77,7 +135,12 @@ components/
                     #   SeniorJourney, SeniorStatement)
 app/demo/           # primary/kindergarten template (config.ts + scoped school.css)
 app/senior/         # senior template (config.ts + scoped senior.css)
-public/senior/      # senior template assets (hand-drawn arrow PNGs)
+public/
+  hero-frames/      # 300 JPEG frames for the scroll-scrubbed hero (committed)
+  senior/
+    arrow-*.png     # hand-drawn arrow assets
+    img/            # senior template photos (p1..p20.jpg)
+  videos/  models/  # parked hero video + arm model (git-ignored — see Assets)
 lib/
   scroll.ts         # shared scroll state (page progress + hero-build progress)
 legacy/             # the original static HTML/CSS/JS site (archived)
@@ -111,25 +174,34 @@ npm run build    # production build
 Dev shortcuts: `?nointro=1` skips the cold-open; `?hp=<0..1>` forces a fixed
 hero build state (for inspecting/screenshotting the scrub).
 
-## Assets excluded from git
+## Assets
 
-Large binaries are **not committed** (see `.gitignore`). The app builds and
-typechecks without them (they load via runtime URLs), but the **hero renders
-its video at runtime**, so a deploy needs it in place:
+The **live hero art is committed** — `public/hero-frames/` (300 JPEGs, ~6 MB)
+and the senior template photos/arrows in `public/senior/` — so the site runs and
+deploys with no extra steps. To regenerate the hero frames from a source clip:
+
+```bash
+ffmpeg -i src.mp4 -vf "fps=30,scale=1280:-1" -q:v 4 public/hero-frames/frame-%03d.jpg
+# then update FRAME_COUNT in components/scene/HeroFrames.tsx to match
+```
+
+Large binaries **not committed** (see `.gitignore`). The app builds/typechecks
+without them:
 
 | Path | What | Notes |
 |---|---|---|
-| `public/videos/origin-arm.mp4` | hero video | **required at runtime.** Re-encode all-keyframe for smooth scrubbing: `ffmpeg -i src.mp4 -an -c:v libx264 -crf 22 -g 1 -keyint_min 1 -sc_threshold 0 -movflags +faststart public/videos/origin-arm.mp4` |
+| `public/videos/origin-arm.mp4` | hero video | only for the **parked** `HeroVideo` (superseded by `HeroFrames`) |
 | `public/models/arm.glb` | robot-arm model | only used by the parked `HeroScene` |
-| `assets/` | AI/source inputs (PNGs, source `.glb`, source `.mp4`) | working inputs; not needed to run |
+| `assets/` | AI/source inputs (frame source, PNGs, `.glb`, `.mp4`, client photos) | working inputs; not needed to run |
 
 ---
 
 ## Project status & devlog
 
-**Current milestone:** ORIGIN concept — cold-open cinematic, BUILD % spine, and
-a scroll-scrubbed video hero, on top of the existing marketing sections. Builds
-clean; verified via headless Chrome screenshots.
+**Current milestone:** ORIGIN landing page (cold-open cinematic, BUILD % spine,
+scroll-scrubbed **300-frame canvas hero**, glass marketing sections) **plus** the
+two config-driven school-website templates (`/demo`, `/senior`). Builds clean;
+verified via headless Chrome screenshots.
 
 **Premium glass pass (2026-07):** refined the hero into a calm editorial
 two-column layout (robot right, copy in a ≤560px left zone), lightened the nav
@@ -145,22 +217,29 @@ replaced the flat backdrop with the layered **`Atmosphere`** (vignette, grain,
 grid, hidden marks, `Dust`, haze, scanner beam) that wakes on scroll. Added
 smooth-scroll for in-page anchors.
 
-**The 3D → video pivot (why the hero is a video):** the hero was first built as
-a real-time R3F scene (`HeroScene`) where a robot arm builds 3D blocks from a
-blueprint on scroll. The supplied arm model was a single fused mesh (image-to-3D)
-with no joints, so it couldn't articulate — only slide rigidly. Rather than rig
-it, we pivoted the hero to a **pre-rendered video scrubbed by scroll**, which
-keeps the fixed-base, articulated motion and a photoreal look. `HeroScene` is
-kept parked for possible revival.
+**The hero pipeline (3D → video → frames):** the hero was first a real-time R3F
+scene (`HeroScene`) where a robot arm builds 3D blocks on scroll. The supplied
+arm model was a single fused mesh (image-to-3D) with no joints, so it couldn't
+articulate — only slide rigidly. We pivoted to a **pre-rendered video scrubbed
+by scroll** (`HeroVideo`) for articulated, photoreal motion — but `<video>`
+seeking is jittery. The current hero (`HeroFrames`) paints a **300-frame image
+sequence to a canvas**, which scrubs cleanly both directions. `HeroScene` and
+`HeroVideo` are kept parked for reference/revival.
 
 **School templates (2026-07):** started ORIGIN's product — reusable,
 config-driven school websites. Built the **primary/kindergarten** scrapbook
 template (`/demo`) and the **secondary/senior** editorial template (`/senior`),
 the latter matched section-by-section to a modern international-school reference
-(structure/style only — generic copy + placeholders for copyright safety).
-Senior template includes a seamless horizontal education-journey scroller, a
-scroll-driven annotation draw-on, and a hover-interactive spotlight collage.
-Next: the inner pages (About, Academics, Student Life, Admissions + form).
+(structure/style only — generic copy for copyright safety). Landed the seamless
+horizontal education-journey scroller, the scroll-driven statement annotations,
+the dotted-grid people/life sections, and the hover-interactive spotlight
+collage; widened the container and opened up the vertical rhythm.
+
+**Real media pass (2026-07):** replaced every placeholder gradient on `/senior`
+with 20 supplied school photos (compressed to ~300 KB JPEGs, config-driven for
+the journey) and swapped the hero/journey SVG doodles for the hand-drawn arrow
+PNG assets. Next on the templates: the inner pages (About, Academics, Student
+Life, Admissions + form).
 
 **Where we left off:** run `git log --oneline -1`. All work lives on **`main`**
 (single-branch workflow — see [Branching](#branching)).
