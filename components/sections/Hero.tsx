@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { scrollState } from "@/lib/scroll";
-import HeroVideo from "@/components/scene/HeroVideo";
+import HeroFrames from "@/components/scene/HeroFrames";
 
 const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -18,7 +18,7 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
 
   // Feed the pinned hero's local scroll progress (0..1) to scrollState — it
-  // drives the video scrub (HeroVideo) and the BUILD% HUD. The copy is static.
+  // drives the frame scrub (HeroFrames) and the BUILD% HUD. The copy is static.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const forced = params.get("hp");
@@ -45,7 +45,7 @@ export default function Hero() {
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         {/* robot stage — full-bleed, shifted right so it owns the right half */}
         <div className="absolute inset-0">
-          <HeroVideo />
+          <HeroFrames />
         </div>
 
         {/* --- color-grade the video into the obsidian environment --- */}
